@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:data="https://github.com/mxab/thymeleaf-extras-data-attribute"
+      layout:decorator="layouts/root_layout">
+<head>
+</head>
+<body>
+	<div layout:fragment="page-content">
+    
+		 <div class="box">
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="useradmision" class="table table-striped">
+                <thead>
+                <tr>
+                  <th>Documento</th>
+                  <th>Nombres</th>
+                  <th>Apellidos</th>
+                  <th></th>
+                  <th></th>
+                </tr>
+                </thead>
+                <!--<tbody>
+                <tr>
+                  <td>CC 87965441</td>
+                  <td>Jose Francisco</td>
+                  <td>Lopez </td>
+                   <td><a href="#" th:href="@{/user/usuarioform}"><span class="btn btn-block btn-primary btn-xs">Editar</span></a></td>
+                  <td><span class="btn btn-block btn-danger btn-xs">Activar</span></td>
+                  <td><a href="#" th:href="@{/user/citas}" class="btn btn-block btn-default btn-xs">Cita</a></td>
+                  <td><a href="#" th:href="@{/user/ingreso}" class="btn btn-block btn-default btn-xs">Ingresar</a></td> 
+                </tr>               
+                </tbody>-->
+              </table>
+              <div th:if="${result == 1}" class="alert alert-success" role="alert">¡Agregado exitosamente!</div>
+              <div th:if="${result == 0}" class="alert alert-danger" role="alert">Error Adding person!</div>
+              <a th:href="@{/user/usuarioform?id=0}" class="btn btn-primary" style="margin-right: 5px;">
+            		<i class="fa glyphicon glyphicon-plus"></i> Agregar	</a>
+            	<span>Evite crear usuarios duplicados: verifique los datos antes de crear un nuevo usuario.</span>
+            </div>
+            <!-- /.box-body -->
+            
+          </div>
+          <!-- /.box -->
+		
+		
+		
+	</div>
+	
+		
+</body>
+</html>

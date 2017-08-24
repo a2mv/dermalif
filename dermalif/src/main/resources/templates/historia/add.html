@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:data="https://github.com/mxab/thymeleaf-extras-data-attribute"
+      layout:decorator="layouts/root_layout">
+<head>
+</head>
+<body>
+	<!-- Main content -->
+	<div layout:fragment="page-content">
+		<div class="box box-info">
+			<div class="box-header with-border">
+				<h3 class="box-title">Datos del paciente</h3>
+				<div class="box-tools pull-right">
+					<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+				</div>
+			</div>
+			<!-- /.box-header -->
+            <div class="box-body">
+            	<div class="">            		
+           			<div class="col-md-2">
+           				<img class="profile-user-img img-responsive img-circle" th:src="@{${person.imageprofile}}" alt="User profile picture"/>
+						<h3 class="profile-username text-center"><span th:text="${person.firstname+' '+person.lastname}"></span></h3>
+	            		<p class="text-muted text-center"><span th:text="${person.tdocumento+' '+person.ndocumento}"></span></p>
+           			</div>
+           			<div class="col-md-3">           				
+	              		<div class="form-group"><label class="control-label">Documento paciente:</label>
+	        				<p class="form-control-static"><span th:text="${person.tdocumento+' '+person.ndocumento}"></span></p>
+	        			</div> 
+	              		<div class="form-group"><label class="control-label">Fecha nacimiento:</label>
+	        				<p class="form-control-static"><span th:text="${person.birthdate}"></span></p>
+	        			</div> 
+	        			 <div class="form-group"><label class="control-label">Sexo:</label>
+	        				<p class="form-control-static"><span th:text="${person.tsexo}"></span></p>
+	        			</div> 
+           			</div>  
+           			<div class="col-md-3">
+           				<div class="form-group"><label class="control-label">Nombre completo:</label>
+	        				<p class="form-control-static">
+	        				<span th:text="${person.firstname+' '+person.firstname2+' '+person.lastname+' '+person.lastname2}"></span></p>
+	        			</div> 
+	        			 <div class="form-group"><label class="control-label">Edad:</label>
+	        				<p class="form-control-static"><span th:text="${edad}"></span></p>
+	        			</div>
+	        			<div class="form-group"><label class="control-label">Teléfono:</label>
+	        				<p class="form-control-static"><span th:text="${person.telefono}"></span></p>
+	        			</div>
+           			</div>        
+           			<div class="col-md-4">
+           				<div class="form-group"><label class="control-label">Ciudad nacimiento:</label>
+	        				<p class="form-control-static"><span th:text="${person.cnacimiento.countryModel.name+ ' | '+person.cnacimiento.name}"></span></p>
+	        			</div> 
+	        			<div class="form-group"><label class="control-label">Ciudad residencia:</label>
+	        				<p class="form-control-static"><span th:text="${person.cresidencia.countryModel.name+' | '+person.cresidencia.name}"></span></p>
+	        			</div>
+	        			<div class="form-group"><label class="control-label">Dirección:</label>
+	        				<p class="form-control-static"><span th:text="${person.direccion}"></span></p>
+	        			</div> 
+           			</div>		
+            	</div>
+            </div>
+            <!-- /.box-body -->            
+		</div>
+		<!-- /.box-info -->
+		<div class="box box-info collapsed-box">
+			<div class="box-header with-border">
+				<h3 class="box-title">Datos del ingreso</h3>
+				<div class="box-tools pull-right">
+					<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+				</div>
+			</div>
+			<!-- /.box-header -->
+            <div class="box-body">
+        		<div class="row">
+        			<div class="col-md-4">
+        				<div class="form-group"><label class="control-label">Empresa contratante:</label>
+      						<p class="form-control-static"><span th:text="${ingreso.empresa}"></span></p>
+     					</div>
+        			</div>
+      				<div class="col-md-4">
+	      				<div class="form-group"><label class="control-label">Ocupación:</label>
+	      					<p class="form-control-static"><span th:text="${ingreso.ocupacion}"></span></p>
+	     				</div>
+      				</div>     				
+	            	
+       			</div>
+       			<div class="form-group"><label class="control-label">Causa de consulta:</label>
+	     				<p class="form-control-static"><span th:text="${ingreso.cconsulta}"></span></p>
+     			</div>
+            </div>
+            <!-- /.box-body -->   
+                     
+		</div>
+		<!-- /.box-info -->
+		<div class="box box-info">
+			<div class="box-header with-border">
+				<h3 class="box-title">Atención médica</h3>
+				<div class="box-tools pull-right">
+					<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+				</div>
+			</div>
+			<!-- /.box-header -->
+            <div class="box-body">
+            	<form class="" action="#" th:action="@{/historia/addhistoria}" th:object="${historia}" method="post">
+            	<input type="hidden" th:field="*{ingresomodel.id}"></input>
+            	<input type="hidden" th:field="*{id}"></input>
+	        		<div class="form-group required"><h4><label class="control-label">Motivo de consulta:</label></h4>
+		     			<textarea class="form-control" rows="2" th:field="*{mconsulta}" th:value="${mconsulta}"></textarea>
+		     			<span style="Color:red;"  th:if="${#fields.hasErrors('mconsulta')}" th:errors="*{mconsulta}"></span>
+		     		</div> 
+		     		<BR/>
+		     		<h4><label>Exploración dermatológica:</label></h4>
+		     		<div class="form-group"><label class="control-label">Topografía:</label>
+		     			<textarea class="form-control" rows="2" th:field="*{etopografia}" th:value="${etopografia}"></textarea>
+		     			
+		     		</div>
+		     		<div class="form-group "><label class="control-label">Morfología:</label>
+		     			<textarea class="form-control" rows="2" th:field="*{emorfologia}" th:value="${emorfologia}"></textarea>
+		     		</div>
+		     		<div class="form-group"><label class="control-label">Resto de piel y anexos:</label>
+		     			<textarea class="form-control" rows="2" th:field="*{eresto}" th:value="${eresto}"></textarea>
+		     		</div>
+		     		<BR/>
+		     		<div class="form-group required"><h4><label class="control-label">Interrogatorio:</label></h4>
+		     			<textarea class="form-control" rows="2" th:field="*{interrogatorio}" th:value="${interrogatorio}"></textarea>
+		     			<span style="Color:red;"  th:if="${#fields.hasErrors('interrogatorio')}" th:errors="*{interrogatorio}"></span>
+		     		</div> 
+		     		<div class="form-group"><h4><label class="control-label">Antecedentes familiares:</label></h4>
+		     			<textarea class="form-control" rows="2" th:field="*{afamiliares}" th:value="${afamiliares}"></textarea>
+		     		</div> 
+		     		<div class="form-group"><h4><label class="control-label">Antecedentes Personales:</label></h4>
+		     			<textarea class="form-control" rows="2" th:field="*{apersonales}" th:value="${apresonales}"></textarea>
+		     		</div> 
+		     		<div class="form-group required"><h4><label class="control-label">Exploración Física General:</label></h4>
+		     			<textarea class="form-control" rows="10" th:field="*{efgeneral}" th:value="${efgeneral}"></textarea>
+		     			<span style="Color:red;"  th:if="${#fields.hasErrors('efgeneral')}" th:errors="*{efgeneral}"></span>
+		     		</div> 
+		     		<div class="form-group"><h4><label class="control-label">Estudios Complementarios:</label></h4>
+		     			<textarea class="form-control" rows="2" th:field="*{escomplementario}" th:value="${escomplementario}"></textarea>
+		     		</div> 
+		     		<div class="form-group required"><h4><label class="control-label">Diagnóstico Definitivo:</label></h4>
+		     			<textarea class="form-control" rows="2" th:field="*{diagnostico}" th:value="${diagnostico}"></textarea>
+		     		</div> 
+		     		<div class="form-group"><h4><label class="control-label">Tratamiento:</label></h4>
+		     			<textarea class="form-control" rows="5" th:placeholder="${ejemplotratamiento}" th:field="*{tratamiento}" th:value="${tratamiento}"></textarea>
+		     		</div> 
+		     		<div class="row">
+			     		<div class="col-xs-12">			       			
+		   					<a th:if="${historia.id}!=null" th:href="@{'/historia/reporthistoria?id='+${historia.id}}" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Imprimir</a>
+			     			<button type="submit" class="btn btn-primary pull-right" >Guardar</button>
+			     		</div>
+		     		</div>
+		     		
+		     		
+   				</form>
+            </div>
+            <!-- /.box-body -->   
+                     
+		</div>
+		<!-- /.box-info -->
+	</div>
+</body>
+</html>

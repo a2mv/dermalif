@@ -1,0 +1,5 @@
+1- desde la tabla de usuarios se enviara a la vista citas e ingreso el id y cedula para generar
+citas o ingresos
+2- si entro directamente a citas no puedo dar citas. solo es para gestionar las ya creadas
+3- si entro directamente a ingreso en el combo apareceran solo los que tienen citas ese dia. 
+4- para crear atencion medica es necesario que paciente tenga ingreso (tener cita no genera el ingreso, toca crear el ingreso)

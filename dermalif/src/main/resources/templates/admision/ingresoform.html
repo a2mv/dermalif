@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:data="https://github.com/mxab/thymeleaf-extras-data-attribute"
+      layout:decorator="layouts/root_layout">
+<head>
+</head>
+<body>
+	<!-- Main content -->
+	<div layout:fragment="page-content">
+		<div class="box box-info">
+			<div class="box-header with-border">
+				<h3 class="box-title">Datos del paciente</h3>
+				<div class="box-tools pull-right">
+					<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+				</div>
+			</div>
+			<!-- /.box-header -->
+            <div class="box-body">
+            	<div class="">            		
+           			<div class="col-md-2">
+           				<img class="profile-user-img img-responsive img-circle" th:src="@{${person.imageprofile}}" alt="User profile picture"/>
+						<h3 class="profile-username text-center"><span th:text="${person.firstname+' '+person.lastname}"></span></h3>
+	            		<p class="text-muted text-center"><span th:text="${person.tdocumento+' '+person.ndocumento}"></span></p>
+           			</div>
+           			<div class="col-md-3">           				
+	              		<div class="form-group"><label class="control-label">Documento paciente:</label>
+	        				<p class="form-control-static"><span th:text="${person.tdocumento+' '+person.ndocumento}"></span></p>
+	        			</div> 
+	              		<div class="form-group"><label class="control-label">Fecha nacimiento:</label>
+	        				<p class="form-control-static"><span th:text="${person.birthdate}"></span></p>
+	        			</div> 
+	        			 <div class="form-group"><label class="control-label">Sexo:</label>
+	        				<p class="form-control-static"><span th:text="${person.tsexo}"></span></p>
+	        			</div> 
+           			</div>  
+           			<div class="col-md-3">
+           				<div class="form-group"><label class="control-label">Nombre completo:</label>
+	        				<p class="form-control-static">
+	        				<span th:text="${person.firstname+' '+person.firstname2+' '+person.lastname+' '+person.lastname2}"></span></p>
+	        			</div> 
+	        			 <div class="form-group"><label class="control-label">Edad:</label>
+	        				<p class="form-control-static"><span th:text="${edad}"></span></p>
+	        			</div>
+	        			<div class="form-group"><label class="control-label">Teléfono:</label>
+	        				<p class="form-control-static"><span th:text="${person.telefono}"></span></p>
+	        			</div>
+           			</div>        
+           			<div class="col-md-4">
+           				<div class="form-group"><label class="control-label">Ciudad nacimiento:</label>
+	        				<p class="form-control-static"><span th:text="${person.cnacimiento.countryModel.name+ ' | '+person.cnacimiento.name}"></span></p>
+	        			</div> 
+	        			<div class="form-group"><label class="control-label">Ciudad residencia:</label>
+	        				<p class="form-control-static"><span th:text="${person.cresidencia.countryModel.name+' | '+person.cresidencia.name}"></span></p>
+	        			</div>
+	        			<div class="form-group"><label class="control-label">Dirección:</label>
+	        				<p class="form-control-static"><span th:text="${person.direccion}"></span></p>
+	        			</div> 
+           			</div>		
+            	</div>
+            </div>
+            <!-- /.box-body -->            
+		</div>
+		<!-- /.box-info -->
+		<div class="box box-info collapsed-box">
+			<div class="box-header with-border">
+				<h3 class="box-title">Ultimos ingresos</h3>
+				<div class="box-tools pull-right">
+					<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+				</div>
+			</div>
+			<!-- /.box-header -->
+            <div class="box-body">
+            	<div class="table-responsive">
+                <table class="table no-margin">
+                  <thead>
+                  <tr>
+                    <th>ID Ingreso</th>
+                    <th>Fecha</th>
+                    <th>Empresa</th>
+                    <th></th><!-- meter el usuario que hace el ingreso -->
+                    <th>Estado</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr th:each="ingreso : ${ingresosprevios}" >
+                  	<td><a href="#" th:text="${'ON'+ingreso.norden}"></a></td>
+                  	<td><span th:text="${#dates.format(ingreso.fecha, 'yyyy-MM-dd hh:mm a')}"></span></td>
+                  	<td><span th:text="${ingreso.empresa}"></span></td>
+                  	<td><span></span></td>
+                  	<td>
+                  		<span th:if="${ingreso.tstatus} == ${T(com.pl10.dermalif.enums.TypeIngresoStatus).PAGADO}" class="label label-success" th:text="${ingreso.tstatus}"></span>
+                  		<span th:if="${ingreso.tstatus} == ${T(com.pl10.dermalif.enums.TypeIngresoStatus).PENDIENTE}" class="label label-danger" th:text="${ingreso.tstatus}"></span>
+                  		<span th:if="${ingreso.tstatus} == ${T(com.pl10.dermalif.enums.TypeIngresoStatus).EN_CURSO}" class="label label-info" th:text="${ingreso.tstatus}"></span>
+                  		<span th:if="${ingreso.tstatus} == ${T(com.pl10.dermalif.enums.TypeIngresoStatus).ANULADO}" class="label label-warning" th:text="${ingreso.tstatus}"></span>
+                  	</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.table-responsive -->
+            </div>
+            <!-- /.box-body -->
+		</div>
+		<!-- /.box-info -->
+		<div class="box box-info">
+			<div class="box-header with-border">
+				<h3 class="box-title">Datos del ingreso</h3>
+				<div class="box-tools pull-right">
+					<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+				</div>
+			</div>
+			<!-- /.box-header -->
+            <div class="box-body">
+            <form class="" action="#" th:action="@{/user/addingreso}" th:object="${ingreso}" method="post">
+            <input type="hidden" th:field="*{personModel.id}"></input>
+        		<div class="row">
+        			<div class="col-md-4">
+        				<div class="form-group required"><label class="control-label">Empresa contratante:</label>
+     						<input class="form-control" type="text" th:field="*{empresa}" th:value="${empresa}" placeholder="EPS / ARL / AFP / Particular"/>
+     					</div>
+        			</div>
+      				<div class="col-md-4">
+      					<div class="form-group"><label class="control-label">Ocupación:</label>
+     						<input class="form-control" type="text" th:field="*{ocupacion}" th:value="${ocupacion}" placeholder="Escriba ocupación"/>
+     					</div>	   
+      				</div>     				         	           		
+       			</div>
+       			<div class="form-group required"><label class="control-label">Causa de consulta:</label>
+	     			<textarea class="form-control" th:field="*{cconsulta}" th:value="${cconculta}" rows="3" ></textarea>
+	     		</div> 
+       			<div class="form-group">
+       				<button type="submit" class="btn btn-primary">Guardar</button>
+   				</div>
+   			</form>
+            </div>
+            <!-- /.box-body -->            
+		</div>
+		<!-- /.box-info -->
+	</div>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:data="https://github.com/mxab/thymeleaf-extras-data-attribute"
+      layout:decorator="layouts/root_layout">
+<head>
+</head>
+<body>
+	<div layout:fragment="page-content">
+    
+		 <div class="box">
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="ingresos" class="table table-condensed ">
+                <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Fecha</th>
+                  <th>Documento</th>
+                  <th>Nombre</th>
+                  <th>Estado</th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                </tr>
+                </thead>
+                <!--<tbody>
+                <tr>
+                  <td>CC 87965441</td>
+                  <td>Jose Francisco</td>
+                  <td>Lopez </td>
+                   <td><a href="#" th:href="@{/user/usuarioform}"><span class="btn btn-block btn-primary btn-xs">Editar</span></a></td>
+                  <td><span class="btn btn-block btn-danger btn-xs">Activar</span></td>
+                  <td><a href="#" th:href="@{/user/citas}" class="btn btn-block btn-default btn-xs">Cita</a></td>
+                  <td><a href="#" th:href="@{/user/ingreso}" class="btn btn-block btn-default btn-xs">Ingresar</a></td> 
+                </tr>               
+                </tbody>-->
+              </table>
+            </div>
+            <!-- /.box-body -->
+            
+          </div>
+          <!-- /.box -->
+		
+		<!-- Modal -->
+		<div id="myModal" class="modal fade" role="dialog">
+	  		<div class="modal-dialog">
+	    	<!-- Modal content-->
+	    		<div class="modal-content">
+	    			<form class="" action="#" th:action="@{/user/changedate}" method="post">
+			      		<div class="modal-header">
+			        		<button type="button" class="close" data-dismiss="modal">&times;</button>
+			        		<h4 class="modal-title">Cambiar fecha y hora</h4>
+			      		</div>
+			   			<div class="modal-body">		   	
+			   			<input type="hidden" name="DNI" id="DNI" value=""/>			
+			   				<div class="col-md-6">
+			        			<div class="form-group"><label class="control-label">Fecha de atención:</label>
+				        			<div class="input-group date">
+					        			<div class="input-group-addon">
+					        				<i class="fa fa-calendar"></i>
+				        				</div>
+			       						<input type="text" name="fecha" class="form-control pull-right" id="datepicker"/>
+			               			</div>           			
+	              				</div>
+	              			</div>
+	              			<div class="col-md-6">
+	              				<div class="bootstrap-timepicker">
+	              					<div class="form-group"><label class="control-label">Hora de atención:</label>
+	              						<div class="input-group">
+		              						<input type="text" name="hora" class="form-control timepicker"/>
+		              						<div class="input-group-addon">
+		                      					<i class="fa fa-clock-o"></i>
+		                    				</div>
+	              						</div>              					
+	              					</div>
+	              				</div>
+	              			</div>              			
+			      		</div>
+			      		<div class="modal-footer">
+			        		<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+			        		<button type="submit" class="btn btn-primary" >Aceptar</button>
+			      		</div>
+		      		</form>
+	    		</div>
+	  		</div>
+		</div>
+		<!-- Modal -->
+		
+	</div>
+	
+		
+</body>
+</html>

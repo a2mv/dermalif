@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org ">
+<head>
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <title>Dermalif | Historia Clínica</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"/>
+  <!-- Bootstrap 3.3.6 -->
+  <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}"/>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css"/>
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css"/>
+  <!-- Theme style -->
+  <link rel="stylesheet" th:href="@{/dist/css/AdminLTE.min.css}"/>
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body onload="window.print();">
+<div >
+  <!-- Main content -->
+  <section class="invoice">
+    <!-- title row -->
+    <div class="row">
+      <div class="col-xs-12">
+        <h2 class="page-header">
+          <i class="fa fa-stethoscope"></i> Linda Forero, Dermatologa.
+          <small class="pull-right">Fecha: <span th:text="${historia.ingresomodel.fecha}"></span></small>
+        </h2>
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- info row -->
+    <div class="row invoice-info">
+      <div class="col-sm-4 invoice-col">
+        <strong>Datos Personales</strong>
+        <address>
+          <strong>Documento: </strong>
+          	<span th:text="${historia.ingresomodel.personModel.tdocumento}+' '+${historia.ingresomodel.personModel.ndocumento}"></span><br/>
+          <strong>Nombres: </strong> 
+          	<span th:text="${historia.ingresomodel.personModel.firstname}+' '+${historia.ingresomodel.personModel.firstname2}"></span><br/>
+          <strong>Apellidos: </strong> 
+          	<span th:text="${historia.ingresomodel.personModel.lastname}+' '+${historia.ingresomodel.personModel.lastname2}"></span><br/>
+          <strong>Fecha Nac.: </strong> 
+          	<span th:text="${historia.ingresomodel.personModel.birthdate}"></span><br/>
+         <strong>Sexo: </strong>
+         	<span th:text="${historia.ingresomodel.personModel.tsexo}"></span><br/>
+        </address>
+      </div>
+      <!-- /.col -->
+      <div class="col-sm-4 invoice-col">
+        <br/>
+        <address>
+          <strong>Estado Civil: </strong>
+          	<span th:text="${historia.ingresomodel.personModel.tcivilstatus}"></span><br/>
+          <strong>Ciudad Nac.: </strong> 
+          	<span th:text="${historia.ingresomodel.personModel.cnacimiento.countryModel.name}+', '+${historia.ingresomodel.personModel.cnacimiento.name}"></span><br/>
+          <strong>Ciudad Rec.: </strong> 
+          	<span th:text="${historia.ingresomodel.personModel.cresidencia.countryModel.name}+', '+${historia.ingresomodel.personModel.cresidencia.name}"></span><br/>
+          <strong>Telefono: </strong> 
+          	<span th:text="${historia.ingresomodel.personModel.telefono}"></span><br/>
+         <strong>Dirección: </strong>
+         	<span th:text="${historia.ingresomodel.personModel.direccion}"></span><br/>
+        </address>
+      </div>
+      <!-- /.col -->
+      <div class="col-sm-4 invoice-col">
+        <b>Historia Clínica #<span th:text="${historia.ingresomodel.personModel.tdocumento}+${historia.ingresomodel.personModel.ndocumento}"></span></b><br/>
+        <br/>
+        <b>Ingreso ID:</b> NO<span th:text="${historia.ingresomodel.norden}"></span><br/>
+        <b>Empresa: </b> <span th:text="${historia.ingresomodel.empresa}"></span>
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+	<div class="row">
+		<div class="col-xs-12">
+		<table class="table table-striped">
+			<thead>
+               <tr>
+                 <th align="center">CAUSA DE CONSULTA</th>
+               </tr>
+             </thead>
+             <tbody>
+                <tr>
+                  <td align="justify"><span th:text="${historia.ingresomodel.cconsulta}"></span></td>
+                </tr>
+              </tbody>
+		</table>
+		<table class="table table-striped">
+			<thead>
+               <tr>
+                 <th align="center">MOTIVO DE CONSULTA</th>
+               </tr>
+             </thead>
+             <tbody>
+                <tr>
+                  <td align="justify"><span th:text="${historia.mconsulta}"></span></td>
+                </tr>
+              </tbody>
+		</table>
+		<table class="table table-striped">
+			<thead>
+               <tr>
+                 <th align="center">EXPLORACION DERMATOLÓGICA - TOPOGRAFÍA</th>
+               </tr>
+             </thead>
+             <tbody>
+                <tr>
+                  <td align="justify"><span th:text="${historia.etopografia}"></span></td>
+                </tr>
+              </tbody>
+		</table>
+		<table class="table table-striped">
+			<thead>
+               <tr>
+                 <th align="center">EXPLORACION DERMATOLÓGICA - MORFOLOGÍA</th>
+               </tr>
+             </thead>
+             <tbody>
+                <tr>
+                  <td align="justify"><span th:text="${historia.emorfologia}"></span></td>
+                </tr>
+              </tbody>
+		</table>
+		<table class="table table-striped">
+			<thead>
+               <tr>
+                 <th align="center">EXPLORACION DERMATOLÓGICA - RESTO DE PIERL Y ANEXOS</th>
+               </tr>
+             </thead>
+             <tbody>
+                <tr>
+                  <td align="justify"><span th:text="${historia.eresto}"></span></td>
+                </tr>
+              </tbody>
+		</table>
+		<table class="table table-striped">
+			<thead>
+               <tr>
+                 <th align="center">INTERROGATORIO</th>
+               </tr>
+             </thead>
+             <tbody>
+                <tr>
+                  <td align="justify"><span th:text="${historia.interrogatorio}"></span></td>
+                </tr>
+              </tbody>
+		</table>
+		<table class="table table-striped">
+			<thead>
+               <tr>
+                 <th align="center">ANTECENDENTES FAMILIARES</th>
+               </tr>
+             </thead>
+             <tbody>
+                <tr>
+                  <td align="justify"><span th:text="${historia.afamiliares}"></span></td>
+                </tr>
+              </tbody>
+		</table>
+		<table class="table table-striped">
+			<thead>
+               <tr>
+                 <th align="center">ANTECENDENTES PERSONALES</th>
+               </tr>
+             </thead>
+             <tbody>
+                <tr>
+                  <td align="justify"><span th:text="${historia.apersonales}"></span></td>
+                </tr>
+              </tbody>
+		</table>
+		<table class="table table-striped">
+			<thead>
+               <tr>
+                 <th align="center">EXPLORACIÓN FÍSICA GENERAL</th>
+               </tr>
+             </thead>
+             <tbody>
+                <tr>
+                  <td align="justify"><span th:text="${historia.efgeneral}"></span></td>
+                </tr>
+              </tbody>
+		</table>
+		<table class="table table-striped">
+			<thead>
+               <tr>
+                 <th align="center">ESTUDIOS COMPLEMENTARIOS</th>
+               </tr>
+             </thead>
+             <tbody>
+                <tr>
+                  <td align="justify"><span th:text="${historia.escomplementario}"></span></td>
+                </tr>
+              </tbody>
+		</table>
+		<table class="table table-striped">
+			<thead>
+               <tr>
+                 <th align="center">DIAGNOSTICO DEFINITIVO</th>
+               </tr>
+             </thead>
+             <tbody>
+                <tr>
+                  <td align="justify"><span th:text="${historia.diagnostico}"></span></td>
+                </tr>
+              </tbody>
+		</table>
+		<table class="table table-striped">
+			<thead>
+               <tr>
+                 <th align="center">TRATAMIENTO</th>
+               </tr>
+             </thead>
+             <tbody>
+                <tr>
+                  <td align="justify"><span th:text="${historia.tratamiento}"></span></td>
+                </tr>
+              </tbody>
+		</table>
+        </div>
+	</div>
+    
+
+
+    <div class="row">
+      <!-- accepted payments column -->
+      <div class="col-xs-6">
+
+      </div>
+      <!-- /.col -->
+      <div class="col-xs-6">
+		<div class="lead pull-right">
+			<br/>
+			<img class="" th:src="@{/dist/img/firmalinda.png}" width="125" height="102"/>
+			<hr/>
+			<span>Dra. Linda Forero</span><br/>
+			<small>TP: 25255151</small>
+		</div>
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- ./wrapper -->
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:data="https://github.com/mxab/thymeleaf-extras-data-attribute"
+      layout:decorator="layouts/root_layout">
+<head>
+</head>
+<body>
+	<!-- Main content -->
+	<div layout:fragment="page-content">
+		<div class="row">
+			<div class="col-md-3">
+				<!-- Profile Image -->
+          		<div class="box box-primary">
+            		<div class="box-body box-profile">
+            		
+            			<img class="profile-user-img img-responsive img-circle" th:src="@{${person.imageprofile}}" alt="User profile picture"/>
+						<h3 class="profile-username text-center"><span th:text="${person.firstname+' '+person.lastname}"></span></h3>
+	            		<p class="text-muted text-center"><span th:text="${person.tdocumento+' '+person.ndocumento}"></span></p>
+		        		<ul class="list-group list-group-unbordered">
+	    	        		<li class="list-group-item">
+	        	        		<b>Admisiones</b> <a class="pull-right">27</a>
+	                		</li>
+	                		<li class="list-group-item">
+	                			<b>Inversión</b> <a class="pull-right">$500.000</a>
+	                		</li>
+	                		<li class="list-group-item">
+	                			<b>Otro</b> <a class="pull-right">#######</a>
+	                		</li>
+	              		</ul>
+	            	</div>
+	            	<!-- /.box-body -->
+	          	</div>
+	          	<!-- /.box -->
+			</div>
+			<div class="col-md-9">
+			<div class="nav-tabs-custom">
+				<ul class="nav nav-tabs">
+					<li class="active"><a href="#datos" data-toggle="tab">Datos Personales</a></li>
+              		<li><a href="#imagenperf" data-toggle="tab">Imagen de perfil</a></li>
+              		<li th:if="${personsecurity.firstname}=='Administrador'"><a href="#rolesuser" data-toggle="tab">Usuario del sistema</a></li>
+				</ul>
+				<div class="tab-content">
+					<!-- Datos personales -->
+					<div class="active tab-pane" id="datos">					
+						<form class="form-horizontal" action="#" th:action="@{/user/adduser}" th:object="${person}" method="post">
+						<input type="hidden" th:field="*{id}"></input>
+				        	<div class="box-body">
+				        		<div th:if="${result == 0}" class="alert alert-success" role="alert">¡Documento ya existe!</div>
+				        		<div class="form-group required"><label class="col-md-4 control-label">Tipo identificación:</label>
+				                  	<div class="col-md-5">
+					                  	<select class="form-control" th:field="*{tdocumento}">
+					                    	<option th:each="tdoc : ${T(com.pl10.dermalif.enums.TypeDocument).values()}" 
+					                    		th:value="${tdoc}"
+					                    		th:text="${tdoc}"></option>
+					                  	</select>
+				                  	</div>
+				        		</div>
+				        		<div class="form-group required"><label class="col-md-4 control-label">Identificación:</label>
+				        			<div class="col-md-5">
+				        				<input class="form-control" type="text" th:field="*{ndocumento}" th:value="${ndocumento}" placeholder="Escriba identificación"/>
+				        				<span style="Color:red;"  th:if="${#fields.hasErrors('ndocumento')}" th:errors="*{ndocumento}"></span>
+				        			</div>
+				        		</div> 
+				        		<div class="form-group required"><label class="col-md-4 control-label">Primer nombre:</label>
+				        			<div class="col-md-5">
+				        				<input class="form-control" type="text" th:field="*{firstname}" th:value="${firstname}" placeholder="Escriba primer nombre"/>
+				        				<span style="Color:red;"  th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}"></span>
+				        			</div>
+				        		</div>
+				        		<div class="form-group"><label class="col-md-4 control-label">Segundo nombre:</label>
+				        			<div class="col-md-5">
+				        				<input class="form-control" type="text" th:field="*{firstname2}" th:value="${firstname2}" placeholder="Escriba segundo nombre"/>
+				        			</div>
+				        		</div>
+				        		<div class="form-group required"><label class="col-md-4 control-label">Primer apellido:</label>
+				        			<div class="col-md-5">
+				        				<input class="form-control" type="text" th:field="*{lastname}" th:value="${lastname}" placeholder="Escriba primer apellido"/>
+				        				<span style="Color:red;"  th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}"></span>
+				        			</div>
+				        		</div>
+				        		<div class="form-group"><label class="col-md-4 control-label">Segundo apellido:</label>
+				        			<div class="col-md-5">
+				        				<input class="form-control" type="text" th:field="*{lastname2}" th:value="${lastname2}" placeholder="Escriba segundo apellido"/>
+				        			</div>
+				        		</div>
+				        		<div class="form-group required"><label class="col-md-4 control-label">Fecha de nacimiento:</label>
+					        		<div class="col-md-5">
+						        		<div class="input-group date">
+						        			<div class="input-group-addon">
+						        				<i class="fa fa-calendar"></i>
+					        				</div>
+				       						<input type="text" class="form-control pull-right" id="datepicker" th:field="*{birthdate}" th:value="${birthdate}" placeholder="25/07/2001"/>
+				               			</div>
+				               			<span style="Color:red;"  th:if="${#fields.hasErrors('birthdate')}" th:errors="*{birthdate}"></span>
+			               			</div>
+		              			</div>
+		              			<div class="form-group required"><label class="col-md-4 control-label">Sexo:</label>
+				                  	<div class="col-md-5">
+					                  	<select class="form-control" th:field="*{tsexo}">
+					                    	<option th:each="tsex : ${T(com.pl10.dermalif.enums.TypeSexo).values()}" 
+					                    		th:value="${tsex}"
+					                    		th:text="${tsex}"
+					                    		></option>
+					                  	</select>
+				                  	</div>
+			        			</div>
+		              			<div class="form-group"><label class="col-md-4 control-label">Estado civil:</label>
+				                  	<div class="col-md-5">
+					                  	<select class="form-control" th:field="*{tcivilstatus}">
+					                    	<option th:each="tcs : ${T(com.pl10.dermalif.enums.TypeCivilStatus).values()}" 
+					                    		th:value="${tcs}"
+					                    		th:text="${tcs}"
+					                    		></option>
+					                  	</select>
+				                  	</div>
+			        			</div>
+			        			<div class="form-group"><label class="col-md-4 control-label">Ciudad de nacimiento</label>
+					                <div class="col-md-5">
+						                <select th:id="ciudad1" th:field="*{cnacimiento.id}" class="form-control" style="width: 100%;">
+						                	 <option th:value="*{cnacimiento.id}" th:text="*{cnacimiento.countryModel.name}+' | '+*{cnacimiento.name} "></option>
+					                	</select>
+					                </div>
+				              	</div>
+				              	<div class="form-group"><label class="col-md-4 control-label">Ciudad de residencia</label>
+					                <div class="col-md-5">
+						                <select th:id="ciudad2" th:field="*{cresidencia.id}" class="form-control" style="width: 100%;">
+						                 	<option th:value="*{cresidencia.id}" th:text="*{cresidencia.countryModel.name}+' | '+*{cresidencia.name} "></option>
+						                </select>
+					                </div>
+				              	</div>
+				              	<div class="form-group"><label class="col-md-4 control-label">Dirección:</label>
+				        			<div class="col-md-5">
+				        				<input class="form-control" type="text" th:field="*{direccion}" th:value="${direccion}" placeholder="Escriba dirección"/>
+			        				</div>
+				        		</div>
+				        		<div class="form-group"><label class="col-md-4 control-label">Teléfono:</label>
+				        			<div class="col-md-5">
+				        				<input class="form-control" type="tel" th:field="*{telefono}" th:value="${telefono}" placeholder="Escriba Teléfono/celular"/>
+				        			</div>
+				        		</div>
+				        		<div class="form-group"><label class="col-md-4 control-label">Correo electronico:</label>
+				        			<div class="col-md-5">
+				        				<input class="form-control" type="email" th:field="*{email}" th:value="${email}" placeholder="sucorreo@contoso.com"/>
+				        			</div>
+				        		</div>				        		
+			        		</div>
+			        		<!-- /.box-body -->
+			        		<div class="form-group">
+                    			<div class="col-sm-offset-2 col-sm-10">
+                      				<button type="submit" class="btn btn-primary">Aceptar</button>
+                    			</div>
+                  			</div>
+						</form>
+					</div>
+					<!-- upload imagen -->
+					<div class="tab-pane" id="imagenperf">	
+						<form class="form-horizontal" action="#" th:action="@{/user/upload}" th:object="${person}" method="post" enctype="multipart/form-data">
+							<input type="hidden" th:field="*{id}" th:name="id"></input>
+				        	<div class="box-body">
+				        		<div class="form-group"><label for="exampleInputFile">Subir imagen</label>                  					
+                  						<input type="file" name="file" id="fileInput"/>                      					       				
+                				</div>
+				        	</div>
+				        	<div class="form-group">
+                    			<div class="col-sm-offset-2 col-sm-10">
+                      				<button type="submit" class="btn btn-primary">Guardar</button>
+                    			</div>
+                  			</div>
+			        	</form>			        	
+					</div>
+					<!-- roles -->
+					<div th:if="${personsecurity.firstname}=='Administrador'" class="tab-pane" id="rolesuser">	
+						<h3 class="text-center">Permisos de usuario en el sistema</h3>
+						<hr/>
+						<p class="text-center">Para activar un usuario es necesario que éste haya sido creado previamente con un correo electrónico.</p>
+						<div class="row">
+							<br/>
+							<div class="col-xs-12 col-sm-6 col-sm-offset-3">								
+								<div class="panel panel-default">
+								<input type="hidden" th:name="personrolid" th:value="${person.id}"></input>
+									<div class="panel-heading">Roles</div>									
+									<ul class="list-group">
+										<li class="list-group-item">
+	                        				Activar usuario para el sistema
+	                        				<div class="material-switch pull-right">
+	                        					<input id="rolesys"	name="rolesys" type="checkbox"  th:checked="${personrole.usersystem}"  />
+	                            				<label for="rolesys" class="label-primary"></label>
+	                        				</div>
+	                    				</li>
+	                    				<li class="list-group-item">
+                        					Gestión de pacientes
+					                        <div class="material-switch pull-right">
+					                        	<input id="rolepac" name="rolepac" type="checkbox" th:checked="${personrole.pacrole}"/>
+					                            <label for="rolepac" class="label-success"></label>
+					                        </div>
+					                    </li>
+					                    <li class="list-group-item">
+                        					Gestión de citas
+					                        <div class="material-switch pull-right">
+					                            <input id="rolecit" name="rolecit" type="checkbox" th:checked="${personrole.citrole}"/>
+					                            <label for="rolecit" class="label-success"></label>
+					                        </div>
+					                    </li>
+					                    <li class="list-group-item">
+                        					Gestión de ingresos
+					                        <div class="material-switch pull-right">
+					                            <input id="roleing" name="roleing" type="checkbox" th:checked="${personrole.ingrole}"/>
+					                            <label for="roleing" class="label-success"></label>
+					                        </div>
+					                    </li>
+					                    <li class="list-group-item">
+                        					Gestión de historias clínicas
+					                        <div class="material-switch pull-right">
+					                            <input id="rolehcl" name="rolehcl" type="checkbox" th:checked="${personrole.hclrole}"/>
+					                            <label for="rolehcl" class="label-success"></label>
+					                        </div>
+					                    </li>
+					                    <li class="list-group-item">
+                        					Gestión de facturación
+					                        <div class="material-switch pull-right">
+					                            <input id="rolefac" name="rolefac" type="checkbox" th:checked="${personrole.facrole}"/>
+					                            <label for="rolefac" class="label-success"></label>
+					                        </div>
+					                    </li>
+					                    <li class="list-group-item">
+                        					Imprimir documentos
+					                        <div class="material-switch pull-right">
+					                            <input id="roledoc" name="roledoc" type="checkbox" th:checked="${personrole.docrole}"/>
+					                            <label for="roledoc" class="label-success"></label>
+					                        </div>
+					                    </li>
+									</ul>										
+								</div>									
+							</div>
+						</div>
+					</div>					
+				</div>
+			</div>			
+		</div>
+	</div>
+		
+		
+		
+	</div>
+
+</body>
+</html>
