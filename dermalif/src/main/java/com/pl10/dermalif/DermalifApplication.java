@@ -8,5 +8,6 @@ public class DermalifApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(DermalifApplication.class, args);
+		
 	}
 }
