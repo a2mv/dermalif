@@ -9,3 +9,4 @@ dermalif/mvnw.cmd
 dermalif/pom.xml
 dermalif/.classpath
 dermalif/.project
+dermalif/src/main/resources/application.yml

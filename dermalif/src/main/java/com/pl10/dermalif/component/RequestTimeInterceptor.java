@@ -45,6 +45,7 @@ public class RequestTimeInterceptor extends HandlerInterceptorAdapter{
 			details=auth.getDetails().toString();
 		}
 		logRepository.save(new com.pl10.dermalif.entity.Log(new Date(), details, username, url));
+		
 		LOGGER.info("Url to: '"+request.getRequestURL().toString()+"' in: '"+(System.currentTimeMillis()-startTime)+"'ms");
 	}
 }
