@@ -103,4 +103,19 @@ public class HistoriaServiceImpl implements HistoriaService {
 		return historiaDslRepository.countSearchAllDataHistoria(str);
 	}
 
+	@Override
+	public List<HistoriaModel> findAllHistoriaModelByPerson(String id) {
+		List<Historia> historias = findAllHistoriaByPerson(id);
+		List<HistoriaModel> historiaModels = new ArrayList<HistoriaModel>();
+		for(Historia historia : historias){
+			historiaModels.add(historiaConverter.historiaToHistoriaModel(historia));
+		}
+		return historiaModels;
+	}
+
+	@Override
+	public List<Historia> findAllHistoriaByPerson(String id) {
+		return historiaRepository.findByIngresoPersonId(id);
+	}
+
 }

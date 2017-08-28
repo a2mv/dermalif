@@ -27,4 +27,8 @@ public interface HistoriaService {
 	
 	public abstract Long countFindAllPersonModelWithHistoria(String str);
 	
+	public abstract List<HistoriaModel> findAllHistoriaModelByPerson(String id);
+	
+	public abstract List<Historia> findAllHistoriaByPerson(String id);
+	
 }

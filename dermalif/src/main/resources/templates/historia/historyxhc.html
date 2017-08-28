@@ -16,49 +16,50 @@
 				</div>
 			</div>
 			<!-- /.box-header -->
-            <div class="box-body">
+			<div class="box-body">
             	<div class="">            		
            			<div class="col-md-2">
-           				<img class="profile-user-img img-responsive img-circle" th:src="@{/dist/img/user4-128x128.jpg}" alt="User profile picture"/>
-           				<h3 class="profile-username text-center">Nina Mcintire</h3>
-            			<p class="text-muted text-center">CC 87965441</p>
+           				<img class="profile-user-img img-responsive img-circle" th:src="@{${person.imageprofile}}" alt="User profile picture"/>
+						<h3 class="profile-username text-center"><span th:text="${person.firstname+' '+person.lastname}"></span></h3>
+	            		<p class="text-muted text-center"><span th:text="${person.tdocumento+' '+person.ndocumento}"></span></p>
            			</div>
-           			<div class="col-md-3">
-           				<div class="form-group"><label class="control-label">Documento paciente:</label>			                
-			                <p class="form-control-static">CC 87965441</p>			                
-	              		</div>
+           			<div class="col-md-3">           				
+	              		<div class="form-group"><label class="control-label">Documento paciente:</label>
+	        				<p class="form-control-static"><span th:text="${person.tdocumento+' '+person.ndocumento}"></span></p>
+	        			</div> 
 	              		<div class="form-group"><label class="control-label">Fecha nacimiento:</label>
-	        				<p class="form-control-static">25/06/2001</p>
+	        				<p class="form-control-static"><span th:text="${person.birthdate}"></span></p>
 	        			</div> 
 	        			 <div class="form-group"><label class="control-label">Sexo:</label>
-	        				<p class="form-control-static">Masculino</p>
+	        				<p class="form-control-static"><span th:text="${person.tsexo}"></span></p>
 	        			</div> 
            			</div>  
            			<div class="col-md-3">
            				<div class="form-group"><label class="control-label">Nombre completo:</label>
-	        				<p class="form-control-static">Jose Pablo Fuentes Marquez</p>
+	        				<p class="form-control-static">
+	        				<span th:text="${person.firstname+' '+person.firstname2+' '+person.lastname+' '+person.lastname2}"></span></p>
 	        			</div> 
 	        			 <div class="form-group"><label class="control-label">Edad:</label>
-	        				<p class="form-control-static">16</p>
+	        				<p class="form-control-static"><span th:text="${edad}"></span></p>
 	        			</div>
 	        			<div class="form-group"><label class="control-label">Teléfono:</label>
-	        				<p class="form-control-static">320546385</p>
+	        				<p class="form-control-static"><span th:text="${person.telefono}"></span></p>
 	        			</div>
            			</div>        
            			<div class="col-md-4">
            				<div class="form-group"><label class="control-label">Ciudad nacimiento:</label>
-	        				<p class="form-control-static">Colombia | Caucasia</p>
+	        				<p class="form-control-static"><span th:text="${person.cnacimiento.countryModel.name+ ' | '+person.cnacimiento.name}"></span></p>
 	        			</div> 
 	        			<div class="form-group"><label class="control-label">Ciudad residencia:</label>
-	        				<p class="form-control-static">Colombia | Caucasia</p>
+	        				<p class="form-control-static"><span th:text="${person.cresidencia.countryModel.name+' | '+person.cresidencia.name}"></span></p>
 	        			</div>
 	        			<div class="form-group"><label class="control-label">Dirección:</label>
-	        				<p class="form-control-static">Calle 26 N° 24-25 Barrio San Martín</p>
+	        				<p class="form-control-static"><span th:text="${person.direccion}"></span></p>
 	        			</div> 
            			</div>		
             	</div>
             </div>
-            <!-- /.box-body -->            
+            <!-- /.box-body -->             
 		</div>
     	<!-- /.box box-info -->
 		 <div class="box">
@@ -68,24 +69,22 @@
                 <thead>
                 <tr>
                   <th>Fecha Atención</th>
+                  <th>ID Ingreso</th>
                   <th>Empresa contratante</th>
                   <th></th>
                   <th></th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                	<td>01/12/2016 11:25 AM</td>
-                  	<td>Particular</td>
-                  	<td><a href="#myModal" data-toggle="modal"><span class="btn btn-block btn-primary btn-xs">Aceptar</span></a></td>
-                  	<td><a href="#"><span class="btn btn-block btn-success btn-xs">Imprimir</span></a></td>
-                </tr>  
-                <tr>
-               	<td>02/12/2016 04:00 PM</td>
-                  	<td>Salud Total</td>
-                  	<td><a href="#myModal" data-toggle="modal"><span class="btn btn-block btn-primary btn-xs">Aceptar</span></a></td>
-                  	<td><a href="#"><span class="btn btn-block btn-success btn-xs">Imprimir</span></a></td>
-                </tr>              
+                <tr th:each="historia : ${historias}">
+                	<td><span th:text="${#dates.format(historia.ingresomodel.fecha, 'dd/MM/yyyy hh:mm a')}"></span></td>
+                	<td><span th:text="${historia.ingresomodel.norden}"></span></td>
+                	<td><span th:text="${historia.ingresomodel.empresa}"></span></td>
+                	<td><a href="#" th:href="@{'/historia/reporthistoria?id='+${historia.id}}" target="_blank">
+                			<span class="btn btn-block btn-success btn-xs"><i class="fa fa-print"></i> Historia</span>
+                		</a></td>
+                	<td><a href="#"><span class="btn btn-block btn-success btn-xs">Tratamiento</span></a></td>
+                </tr>             
                 </tbody>
               </table>
             </div>

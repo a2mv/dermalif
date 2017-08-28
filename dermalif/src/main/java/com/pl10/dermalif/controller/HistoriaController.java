@@ -184,5 +184,36 @@ public class HistoriaController {
 		personJsonObject.setAaData(personModelList);
 		return personJsonObject;
 	}
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_HISTORIA')")
+	@GetMapping("historybyuser")
+	public ModelAndView requestViewHistory(@RequestParam(name="id", required=false) String id){
+		LOG.info("METHOD: requestViewHistory() -- PARAMS: "+id);
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		PersonModel personsecurity = userService.userConverter(user);
+		ModelAndView model = new ModelAndView(ViewConstant.VIEW_HISTORYHC);
+		LocationViewModel lvm = new LocationViewModel();
+		lvm.setModulo("HISTORIA");
+		lvm.setUbicacion(HrefConstant.HREF_USERHISTORY);
+		lvm.setDescripcion("Aquí puedes ver las historias clínicas de ");
+		model.addObject("lvm",lvm);
+		model.addObject("personsecurity",personsecurity);
+		//person data
+		PersonModel personModel = personService.findPersonModelById(id);
+		model.addObject("person", personModel);
+		//calcular edad
+		DateFormat fechaHora = new SimpleDateFormat("dd/MM/yyyy");
+		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		LocalDate fechaNac = LocalDate.parse(fechaHora.format(personModel.getBirthdate()), fmt);
+		LocalDate ahora = LocalDate.now();
+		Period edad = Period.between(fechaNac, ahora);
+		model.addObject("edad", edad.getYears() + " Años");
+		//historia datos
+		List<HistoriaModel> historiaModels = historiaService.findAllHistoriaModelByPerson(id);
+		model.addObject("historias",historiaModels);
+		
+		LOG.info("Returning to "+ViewConstant.VIEW_HISTORYHC+" view");		
+		return model;
+	}
 
 }

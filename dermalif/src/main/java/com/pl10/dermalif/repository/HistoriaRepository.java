@@ -15,5 +15,7 @@ public interface HistoriaRepository extends JpaRepository<Historia, Serializable
 	public abstract Historia findById(String id);
 	
 	public abstract List<Historia> findByIngreso(Ingreso ingreso);
+	
+	public abstract List<Historia> findByIngresoPersonId(String id);
 
 }
