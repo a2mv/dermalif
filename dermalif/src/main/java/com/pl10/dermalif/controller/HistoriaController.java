@@ -7,6 +7,7 @@ import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.commons.logging.Log;
@@ -22,7 +23,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.pl10.dermalif.constant.HrefConstant;
@@ -30,9 +33,11 @@ import com.pl10.dermalif.constant.ViewConstant;
 import com.pl10.dermalif.model.HistoriaModel;
 import com.pl10.dermalif.model.IngresoModel;
 import com.pl10.dermalif.model.LocationViewModel;
+import com.pl10.dermalif.model.PersonJsonObject;
 import com.pl10.dermalif.model.PersonModel;
 import com.pl10.dermalif.service.HistoriaService;
 import com.pl10.dermalif.service.IngresoService;
+import com.pl10.dermalif.service.PersonSevice;
 import com.pl10.dermalif.service.UserService;
 
 @Controller
@@ -53,6 +58,10 @@ public class HistoriaController {
 	@Autowired
 	@Qualifier("historiaService")
 	private HistoriaService historiaService;
+	
+	@Autowired
+	@Qualifier("personService")
+	private PersonSevice personService;
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_HISTORIA')")
 	@GetMapping("hcform")
@@ -160,21 +169,20 @@ public class HistoriaController {
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_HISTORIA')")
-	@GetMapping("historybyuser")
-	public ModelAndView requestViewHistorybyUser(){
-		LOG.info("METHOD: requestViewHistorybyUser()");
-		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		PersonModel personsecurity = userService.userConverter(user);
-		ModelAndView model = new ModelAndView(ViewConstant.VIEW_HISTORYHC);
-		LocationViewModel lvm = new LocationViewModel();
-		lvm.setModulo("HISTORIA");
-		lvm.setUbicacion(HrefConstant.HREF_USERHISTORY);
-		lvm.setDescripcion("Aquí puedes ver las atenciones del usuario seleccionado");
-		model.addObject("lvm",lvm);
-		model.addObject("personsecurity",personsecurity);
-		LOG.info("Returning to "+ViewConstant.VIEW_HISTORYHC+" view");		
-		return model;
+	@RequestMapping(value = {"/alluser"}, method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody PersonJsonObject alluserDataTables(HttpServletRequest request){
+		Integer pageNumber = 0;
+		if (null != request.getParameter("iDisplayStart")){
+			pageNumber = (Integer.valueOf(request.getParameter("iDisplayStart"))/10)+1;
+		}
+		String searchParameter = request.getParameter("sSearch");		
+		List<PersonModel> personModelList = historiaService.findAllPersonModelWithHistoria(searchParameter, pageNumber);		
+		Long countRecords = historiaService.countFindAllPersonModelWithHistoria(searchParameter);
+		PersonJsonObject personJsonObject = new PersonJsonObject();		
+		personJsonObject.setiTotalDisplayRecords(countRecords.intValue());		
+		personJsonObject.setiTotalRecords(countRecords.intValue());
+		personJsonObject.setAaData(personModelList);
+		return personJsonObject;
 	}
-	
 
 }

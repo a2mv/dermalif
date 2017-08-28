@@ -150,9 +150,6 @@
 			            </span>
 			          </a>
 			          <ul class="treeview-menu">
-				        <li th:classappend="${lvm.ubicacion}==${T(com.pl10.dermalif.constant.HrefConstant).HREF_HC} ? active">
-				        	<a href="#" th:href="@{/historia/add}"><i class="fa fa-stethoscope"></i>Atención Medica</a>
-				       	</li>
 				        <li th:classappend="${lvm.ubicacion}==${T(com.pl10.dermalif.constant.HrefConstant).HREF_USERHISTORY} ? active">
 				        	<a href="#" th:href="@{/historia/userhistory}"><i class="fa fa-h-square"></i>Archivo Clinico</a>
 				       	</li>
@@ -466,6 +463,49 @@
 					           		return '<a data-toggle="modal" data-id="'+ data.id +'" href="#myModal" class="open-Modal"><span class="btn btn-block btn-default btn-xs">Hora</span></a>';
 					            	}
 					            },
+					        ]
+					    });
+					
+					$('#userhistoria').DataTable({
+						"lengthChange": false,  
+						"ordering": false,
+					      "autoWidth": true,					      
+							"bProcessing": true,
+							"bServerSide": true,
+							"sort": "position",
+							"bStateSave": false,
+							//"iDisplayLength": 10,
+							"iDisplayStart": 0,
+							"fnDrawCallback": function () {
+							},
+							"sAjaxSource": "/dermalif/historia/alluser",							
+							"aoColumns": [
+					            //{ "mData": "ndocumento" },
+					            { "mData": null,
+					            	"bSortable": false,
+					            	"mRender": function(data) {
+					           			return data.tdocumento+' - '+data.ndocumento;
+					            	}
+					            },
+					            { "mData": null,
+					            	"bSortable": false,
+					            	"mRender": function(data) {
+					           			return data.firstname+' '+data.firstname2;
+					            	}
+					            },
+					            { "mData": null,
+					            	"bSortable": false,
+					            	"mRender": function(data) {
+					           			return data.lastname+' '+data.lastname2;
+					            	}
+					            },
+					            { "mData": null,
+					            	"bSortable": false,
+					            	"mRender": function(data) {
+					           		return '<a href="/dermalif/historia/usuarioform?id='+ data.id +'"><span class="btn btn-block btn-primary btn-xs">Ver Historias</span></a>';
+					            	}
+					            },
+					            
 					        ]
 					    });
 					

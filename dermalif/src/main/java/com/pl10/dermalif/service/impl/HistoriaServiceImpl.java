@@ -9,13 +9,17 @@ import org.springframework.stereotype.Service;
 
 import com.pl10.dermalif.coverter.HistoriaConverter;
 import com.pl10.dermalif.coverter.IngresoConverter;
+import com.pl10.dermalif.coverter.PersonConverter;
 import com.pl10.dermalif.entity.Historia;
 import com.pl10.dermalif.entity.Ingreso;
+import com.pl10.dermalif.entity.Person;
 import com.pl10.dermalif.enums.TypeIngresoStatus;
 import com.pl10.dermalif.model.HistoriaModel;
 import com.pl10.dermalif.model.IngresoModel;
+import com.pl10.dermalif.model.PersonModel;
 import com.pl10.dermalif.repository.HistoriaRepository;
 import com.pl10.dermalif.repository.IngresoRepository;
+import com.pl10.dermalif.repository.query.HistoriaDslRepository;
 import com.pl10.dermalif.service.HistoriaService;
 
 @Service("historiaService")
@@ -34,8 +38,16 @@ public class HistoriaServiceImpl implements HistoriaService {
 	HistoriaRepository historiaRepository;
 	
 	@Autowired
+	@Qualifier("historiaDslRepository")
+	HistoriaDslRepository historiaDslRepository;
+	
+	@Autowired
 	@Qualifier("ingresoConverter")
 	IngresoConverter ingresoConverter;
+	
+	@Autowired
+	@Qualifier("personConverter")
+	PersonConverter personConverter;
 	
 	@Override
 	public HistoriaModel addHistoriaModel(HistoriaModel historiaModel) {
@@ -69,6 +81,26 @@ public class HistoriaServiceImpl implements HistoriaService {
 	@Override
 	public List<Historia> findAllHistoriaByIngreso(Ingreso ingreso) {
 		return historiaRepository.findByIngreso(ingreso);
+	}
+
+	@Override
+	public List<PersonModel> findAllPersonModelWithHistoria(String str, int page) {
+		List<Person> persons = findAllPersonWithHistoria(str, page);
+		List<PersonModel> personModels = new ArrayList<PersonModel>();
+		for(Person person : persons){
+			personModels.add(personConverter.personToPersonModel(person));
+		}
+		return personModels;
+	}
+
+	@Override
+	public List<Person> findAllPersonWithHistoria(String str, int page) {
+		return historiaDslRepository.searchAllDataHistoria(str, page);
+	}
+
+	@Override
+	public Long countFindAllPersonModelWithHistoria(String str) {
+		return historiaDslRepository.countSearchAllDataHistoria(str);
 	}
 
 }
