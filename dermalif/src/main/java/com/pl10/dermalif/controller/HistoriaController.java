@@ -195,7 +195,7 @@ public class HistoriaController {
 		LocationViewModel lvm = new LocationViewModel();
 		lvm.setModulo("HISTORIA");
 		lvm.setUbicacion(HrefConstant.HREF_USERHISTORY);
-		lvm.setDescripcion("Aquí puedes ver las historias clínicas de ");
+		lvm.setDescripcion("Aquí puedes ver las historias clínicas");
 		model.addObject("lvm",lvm);
 		model.addObject("personsecurity",personsecurity);
 		//person data
@@ -210,8 +210,7 @@ public class HistoriaController {
 		model.addObject("edad", edad.getYears() + " Años");
 		//historia datos
 		List<HistoriaModel> historiaModels = historiaService.findAllHistoriaModelByPerson(id);
-		model.addObject("historias",historiaModels);
-		
+		model.addObject("historias",historiaModels);		
 		LOG.info("Returning to "+ViewConstant.VIEW_HISTORYHC+" view");		
 		return model;
 	}
