@@ -67,14 +67,14 @@
 			            <!-- Menu Toggle Button -->
 			            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
 			              <!-- The user image in the navbar-->
-			              <img th:src="@{${personsecurity.imageprofile}}" class="user-image" alt="User Image"/>
+			              <img th:src="@{'/user/files?filename='+${personsecurity.id}}" class="user-image" alt="User Image"/>
 			              <!-- hidden-xs hides the username on small devices so only the image appears. -->
 			              <span class="hidden-xs" th:text="${personsecurity.firstname+' '+personsecurity.lastname}"></span>
 			            </a>
 			            <ul class="dropdown-menu">
 			              <!-- The user image in the menu -->
 			              <li class="user-header">
-			                <img th:src="@{${personsecurity.imageprofile}}" class="img-circle" alt="User Image"/>			
+			                <img th:src="@{'/user/files?filename='+${personsecurity.id}}" class="img-circle" alt="User Image"/>			
 			                <p>
 			                  <span th:text="${personsecurity.firstname+' '+personsecurity.lastname}"></span>
 			                </p>
@@ -102,7 +102,7 @@
 			      <!-- Sidebar user panel (optional) -->
 			      <div class="user-panel">
 			        <div class="pull-left image">
-			          <img th:src="@{${personsecurity.imageprofile}}" class="img-circle" alt="User Image"/>
+			          <img th:src="@{'/user/files?filename='+${personsecurity.id}}" class="img-circle" alt="User Image"/>
 			        </div>
 			        <div class="pull-left info">
 			          <p><span th:text="${personsecurity.firstname}"></span></p>

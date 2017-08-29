@@ -19,7 +19,7 @@
 			<div class="box-body">
             	<div class="">            		
            			<div class="col-md-2">
-           				<img class="profile-user-img img-responsive img-circle" th:src="@{${person.imageprofile}}" alt="User profile picture"/>
+           				<img class="profile-user-img img-responsive img-circle" th:src="@{'/user/files?filename='+${person.id}}" alt="User profile picture"/>
 						<h3 class="profile-username text-center"><span th:text="${person.firstname+' '+person.lastname}"></span></h3>
 	            		<p class="text-muted text-center"><span th:text="${person.tdocumento+' '+person.ndocumento}"></span></p>
            			</div>

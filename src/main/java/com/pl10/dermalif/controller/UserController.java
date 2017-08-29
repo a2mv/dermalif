@@ -1,8 +1,5 @@
 package com.pl10.dermalif.controller;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,7 +9,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
-import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -21,6 +17,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -50,6 +48,7 @@ import com.pl10.dermalif.model.UserRolePersonModel;
 import com.pl10.dermalif.service.CityService;
 import com.pl10.dermalif.service.IngresoService;
 import com.pl10.dermalif.service.PersonSevice;
+import com.pl10.dermalif.service.StorageService;
 import com.pl10.dermalif.service.UserService;
 
 @Controller
@@ -77,6 +76,10 @@ public class UserController {
 	@Autowired
 	@Qualifier("userService")
 	private UserService userService;
+	
+	@Autowired
+	@Qualifier("storageService")
+	StorageService storageService;
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping({"","/"})
@@ -144,9 +147,7 @@ public class UserController {
 		} else {
 			LOG.info("Returning to user/index view");
 			model.setViewName("redirect:/user");
-			if(personModel.getId().equals("")){
-				personModel.setImageprofile("/dist/img/avatar5.png");
-			}else{
+			if(!personModel.getId().equals("")){
 				personModel.setImageprofile(personService.findPersonModelById(personModel.getId()).getImageprofile());
 			}
 			if (null != personService.addPersonModel(personModel)) {
@@ -234,21 +235,31 @@ public class UserController {
 			@RequestParam(name="file", required=false) MultipartFile file,
 			Model model) throws Exception{
 		LOG.info("METHOD: uploadImagePerfil() -- PARAMS: id:"+id+" file: "+file);
-		String webappRoot = servletContext.getRealPath("/");
+		//String webappRoot = servletContext.getRealPath("/");		
 		if(id.equals("0") || id.isEmpty()){
 			return "redirect:/user";
 		}else{
 			if (!file.isEmpty()) {
-				BufferedImage src = ImageIO.read(new ByteArrayInputStream(file.getBytes()));
-				File destination = new File(webappRoot + "/resources/profile-pictures/ProfileImage"+id+".png");
-				ImageIO.write(src, "png", destination);
-				PersonModel personModel = personService.findPersonModelById(id);
-				personModel.setImageprofile("/resources/profile-pictures/ProfileImage"+id+".png");
-				personService.addPersonModel(personModel);
+				
+				storageService.store(file, id);
+				//BufferedImage src = ImageIO.read(new ByteArrayInputStream(file.getBytes()));
+				//File destination = new File(webappRoot + "/profile-pictures/ProfileImage"+id+".png");
+				//ImageIO.write(src, "png", destination);
+				//PersonModel personModel = personService.findPersonModelById(id);
+				//personModel.setImageprofile("/profile-pictures/ProfileImage"+id+".png");
+				//personService.addPersonModel(personModel);
 			}
 			return "redirect:/user/usuarioform?id="+id;			
 		}
 	}	
+	
+	@GetMapping("/files")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")	
+	public @ResponseBody ResponseEntity<Resource> getFile(@RequestParam(name="filename", required=false) String filename) {
+		Resource file = storageService.loadFile(filename);
+		return ResponseEntity.ok()
+				.body(file);
+	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_INGRESO')")
 	@GetMapping("ingresosview")
