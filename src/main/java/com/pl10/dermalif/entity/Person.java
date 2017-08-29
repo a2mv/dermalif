@@ -59,7 +59,7 @@ public class Person {
 	@Column(name = "email", nullable = true)
 	private String email;
 	@Column(name = "imageprofile", nullable = true)
-	private String imageprofile = "/dist/img/avatar5.png";
+	private String imageprofile;
 
 	public Person() {
 		super();

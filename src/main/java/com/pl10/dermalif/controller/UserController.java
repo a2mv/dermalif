@@ -358,16 +358,14 @@ public class UserController {
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_INGRESO')")
 	@PostMapping("changedate")
 	public String changeUpdate(@ModelAttribute(name="DNI") String id,
-			@ModelAttribute(name="fecha") Date fecha,
+			@ModelAttribute(name="fecha") String fecha,
 			@ModelAttribute(name="hora") String hora) throws ParseException{
 		LOG.info("METHOD: changeUpdate() -- PARAMS: id=" + id+", fecha="+fecha+", hora="+hora);
-		DateFormat df = new SimpleDateFormat("dd/MM/yyyy ");
-		String datefinal = df.format(fecha);
-		datefinal = datefinal+hora;
-		df = new SimpleDateFormat("dd/MM/yyyy HH:mm a");
-		fecha = df.parse(datefinal);
+		Date fechad;
+		DateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
+		fechad = df.parse(fecha+" "+hora);
 		IngresoModel ingresoModel = ingresoService.findIngresoModelById(id);
-		ingresoModel.setFecha(fecha);
+		ingresoModel.setFecha(fechad);
 		ingresoService.addIngresoModel(ingresoModel);
 		return "redirect:/user/ingresosview";
 	}

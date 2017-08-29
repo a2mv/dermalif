@@ -108,7 +108,7 @@ public class IngresoModel {
 	}
 	
 	public String getFechaFormat() {
-		return new SimpleDateFormat("yyyy-MM-dd HH:mm a").format(fecha);
+		return new SimpleDateFormat("yyyy-MM-dd hh:mm a").format(fecha);
 	}
 
 	@Override
