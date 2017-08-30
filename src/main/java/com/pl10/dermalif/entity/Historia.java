@@ -43,7 +43,7 @@ public class Historia {
 	private String escomplementario;
 	@Column(name = "diagnostico", nullable = false, length = 2500)
 	private String diagnostico;
-	@Column(name = "tratamiento", length = 2500)
+	@Column(name = "tratamiento", length = 2500, columnDefinition="TEXT")
 	private String tratamiento;
 
 	public Historia() {

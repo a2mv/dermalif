@@ -90,7 +90,7 @@
              </thead>
              <tbody>
                 <tr>
-                  <td align="justify"><span th:text="${historia.ingresomodel.cconsulta}"></span></td>
+                  <td align="justify"><pre style="white-space: pre-line;" th:text="${historia.ingresomodel.cconsulta}"></pre></td>
                 </tr>
               </tbody>
 		</table>
@@ -102,11 +102,11 @@
              </thead>
              <tbody>
                 <tr>
-                  <td align="justify"><span th:text="${historia.mconsulta}"></span></td>
+                  <td align="justify"><pre style="white-space: pre-line;" th:text="${historia.mconsulta}"></pre></td>
                 </tr>
               </tbody>
 		</table>
-		<table class="table table-striped">
+		<table th:if="${historia.etopografia != ''}" class="table table-striped">
 			<thead>
                <tr>
                  <th align="center">EXPLORACION DERMATOLÓGICA - TOPOGRAFÍA</th>
@@ -114,11 +114,11 @@
              </thead>
              <tbody>
                 <tr>
-                  <td align="justify"><span th:text="${historia.etopografia}"></span></td>
+                  <td align="justify"><pre style="white-space: pre-line;" th:text="${historia.etopografia}"></pre></td>
                 </tr>
               </tbody>
 		</table>
-		<table class="table table-striped">
+		<table th:if="${historia.emorfologia != ''}" class="table table-striped">
 			<thead>
                <tr>
                  <th align="center">EXPLORACION DERMATOLÓGICA - MORFOLOGÍA</th>
@@ -126,11 +126,11 @@
              </thead>
              <tbody>
                 <tr>
-                  <td align="justify"><span th:text="${historia.emorfologia}"></span></td>
+                  <td align="justify"><pre style="white-space: pre-line;" th:text="${historia.emorfologia}"></pre></td>
                 </tr>
               </tbody>
 		</table>
-		<table class="table table-striped">
+		<table th:if="${historia.eresto != ''}" class="table table-striped">
 			<thead>
                <tr>
                  <th align="center">EXPLORACION DERMATOLÓGICA - RESTO DE PIERL Y ANEXOS</th>
@@ -138,7 +138,7 @@
              </thead>
              <tbody>
                 <tr>
-                  <td align="justify"><span th:text="${historia.eresto}"></span></td>
+                  <td align="justify"><pre style="white-space: pre-line;" th:text="${historia.eresto}"></pre></td>
                 </tr>
               </tbody>
 		</table>
@@ -150,11 +150,11 @@
              </thead>
              <tbody>
                 <tr>
-                  <td align="justify"><span th:text="${historia.interrogatorio}"></span></td>
+                  <td align="justify"><pre style="white-space: pre-line;" th:text="${historia.interrogatorio}"></pre></td>
                 </tr>
               </tbody>
 		</table>
-		<table class="table table-striped">
+		<table th:if="${historia.afamiliares != ''}" class="table table-striped">
 			<thead>
                <tr>
                  <th align="center">ANTECENDENTES FAMILIARES</th>
@@ -162,11 +162,11 @@
              </thead>
              <tbody>
                 <tr>
-                  <td align="justify"><span th:text="${historia.afamiliares}"></span></td>
+                  <td align="justify"><pre style="white-space: pre-line;" th:text="${historia.afamiliares}"></pre></td>
                 </tr>
               </tbody>
 		</table>
-		<table class="table table-striped">
+		<table th:if="${historia.apersonales != ''}" class="table table-striped">
 			<thead>
                <tr>
                  <th align="center">ANTECENDENTES PERSONALES</th>
@@ -174,7 +174,7 @@
              </thead>
              <tbody>
                 <tr>
-                  <td align="justify"><span th:text="${historia.apersonales}"></span></td>
+                  <td align="justify"><pre style="white-space: pre-line;" th:text="${historia.apersonales}"></pre></td>
                 </tr>
               </tbody>
 		</table>
@@ -186,11 +186,11 @@
              </thead>
              <tbody>
                 <tr>
-                  <td align="justify"><span th:text="${historia.efgeneral}"></span></td>
+                  <td align="justify"><pre style="white-space: pre-line;" th:text="${historia.efgeneral}"></pre></td>
                 </tr>
               </tbody>
 		</table>
-		<table class="table table-striped">
+		<table th:if="${historia.escomplementario != ''}" class="table table-striped">
 			<thead>
                <tr>
                  <th align="center">ESTUDIOS COMPLEMENTARIOS</th>
@@ -198,7 +198,7 @@
              </thead>
              <tbody>
                 <tr>
-                  <td align="justify"><span th:text="${historia.escomplementario}"></span></td>
+                  <td align="justify"><pre style="white-space: pre-line;" th:text="${historia.escomplementario}"></pre></td>
                 </tr>
               </tbody>
 		</table>
@@ -210,11 +210,11 @@
              </thead>
              <tbody>
                 <tr>
-                  <td align="justify"><span th:text="${historia.diagnostico}"></span></td>
+                  <td align="justify"><pre style="white-space: pre-line;" th:text="${historia.diagnostico}"></pre></td>
                 </tr>
               </tbody>
 		</table>
-		<table class="table table-striped">
+		<table th:if="${historia.tratamiento != ''}" class="table table-striped">
 			<thead>
                <tr>
                  <th align="center">TRATAMIENTO</th>
@@ -222,7 +222,7 @@
              </thead>
              <tbody>
                 <tr>
-                  <td align="justify"><span th:text="${historia.tratamiento}"></span></td>
+                  <td align="justify"><pre style="white-space: pre-line;" th:text="${historia.tratamiento}"></pre></td>
                 </tr>
               </tbody>
 		</table>
@@ -253,5 +253,10 @@
   <!-- /.content -->
 </div>
 <!-- ./wrapper -->
+<footer>
+	<div>
+  		<small>Pl10 &copy; 2017 | contacto@pl10.com.co | Todos los derechos reservados.</small>
+  	</div>
+</footer>
 </body>
 </html>
