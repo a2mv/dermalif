@@ -22,6 +22,13 @@ public class CitydemoServiceImpl implements CitydemoService {
 	private CountryRepository countryRepository;
 	
 	@Override
+	public void init() {
+		if(cityRepository.count()==0) {
+			addCities();
+		}		
+	}
+	
+	@Override
 	public void addCities() {
 		cityRepository.save(new City(countryRepository.save(new Country("Colombia")),"Bogotá"));
 		cityRepository.save(new City(countryRepository.findByName("Colombia"),"Medellín"));
@@ -349,4 +356,7 @@ public class CitydemoServiceImpl implements CitydemoService {
 		
 	}
 
+	
+
+	
 }

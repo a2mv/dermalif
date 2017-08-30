@@ -6,6 +6,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.pl10.dermalif.service.CitydemoService;
 import com.pl10.dermalif.service.StorageService;
 
 @SpringBootApplication
@@ -13,6 +14,9 @@ public class DermalifApplication implements CommandLineRunner{
 	
 	@Resource
 	StorageService storageService;
+	
+	@Resource
+	CitydemoService citydemoService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(DermalifApplication.class, args);
@@ -22,5 +26,8 @@ public class DermalifApplication implements CommandLineRunner{
 	@Override
 	public void run(String... args) throws Exception {
 		storageService.init();
+		citydemoService.init();
 	}
+	
+	
 }
