@@ -82,154 +82,56 @@
     <!-- /.row -->
 	<div class="row">
 		<div class="col-xs-12">
-		<table class="table table-striped">
-			<thead>
-               <tr>
-                 <th align="center">CAUSA DE CONSULTA</th>
-               </tr>
-             </thead>
-             <tbody>
-                <tr>
-                  <td align="justify"><pre style="white-space: pre-line;" th:text="${historia.ingresomodel.cconsulta}"></pre></td>
-                </tr>
-              </tbody>
-		</table>
-		<table class="table table-striped">
-			<thead>
-               <tr>
-                 <th align="center">MOTIVO DE CONSULTA</th>
-               </tr>
-             </thead>
-             <tbody>
-                <tr>
-                  <td align="justify"><pre style="white-space: pre-line;" th:text="${historia.mconsulta}"></pre></td>
-                </tr>
-              </tbody>
-		</table>
-		<table th:if="${historia.etopografia != ''}" class="table table-striped">
-			<thead>
-               <tr>
-                 <th align="center">EXPLORACION DERMATOLÓGICA - TOPOGRAFÍA</th>
-               </tr>
-             </thead>
-             <tbody>
-                <tr>
-                  <td align="justify"><pre style="white-space: pre-line;" th:text="${historia.etopografia}"></pre></td>
-                </tr>
-              </tbody>
-		</table>
-		<table th:if="${historia.emorfologia != ''}" class="table table-striped">
-			<thead>
-               <tr>
-                 <th align="center">EXPLORACION DERMATOLÓGICA - MORFOLOGÍA</th>
-               </tr>
-             </thead>
-             <tbody>
-                <tr>
-                  <td align="justify"><pre style="white-space: pre-line;" th:text="${historia.emorfologia}"></pre></td>
-                </tr>
-              </tbody>
-		</table>
-		<table th:if="${historia.eresto != ''}" class="table table-striped">
-			<thead>
-               <tr>
-                 <th align="center">EXPLORACION DERMATOLÓGICA - RESTO DE PIERL Y ANEXOS</th>
-               </tr>
-             </thead>
-             <tbody>
-                <tr>
-                  <td align="justify"><pre style="white-space: pre-line;" th:text="${historia.eresto}"></pre></td>
-                </tr>
-              </tbody>
-		</table>
-		<table class="table table-striped">
-			<thead>
-               <tr>
-                 <th align="center">INTERROGATORIO</th>
-               </tr>
-             </thead>
-             <tbody>
-                <tr>
-                  <td align="justify"><pre style="white-space: pre-line;" th:text="${historia.interrogatorio}"></pre></td>
-                </tr>
-              </tbody>
-		</table>
-		<table th:if="${historia.afamiliares != ''}" class="table table-striped">
-			<thead>
-               <tr>
-                 <th align="center">ANTECENDENTES FAMILIARES</th>
-               </tr>
-             </thead>
-             <tbody>
-                <tr>
-                  <td align="justify"><pre style="white-space: pre-line;" th:text="${historia.afamiliares}"></pre></td>
-                </tr>
-              </tbody>
-		</table>
-		<table th:if="${historia.apersonales != ''}" class="table table-striped">
-			<thead>
-               <tr>
-                 <th align="center">ANTECENDENTES PERSONALES</th>
-               </tr>
-             </thead>
-             <tbody>
-                <tr>
-                  <td align="justify"><pre style="white-space: pre-line;" th:text="${historia.apersonales}"></pre></td>
-                </tr>
-              </tbody>
-		</table>
-		<table class="table table-striped">
-			<thead>
-               <tr>
-                 <th align="center">EXPLORACIÓN FÍSICA GENERAL</th>
-               </tr>
-             </thead>
-             <tbody>
-                <tr>
-                  <td align="justify"><pre style="white-space: pre-line;" th:text="${historia.efgeneral}"></pre></td>
-                </tr>
-              </tbody>
-		</table>
-		<table th:if="${historia.escomplementario != ''}" class="table table-striped">
-			<thead>
-               <tr>
-                 <th align="center">ESTUDIOS COMPLEMENTARIOS</th>
-               </tr>
-             </thead>
-             <tbody>
-                <tr>
-                  <td align="justify"><pre style="white-space: pre-line;" th:text="${historia.escomplementario}"></pre></td>
-                </tr>
-              </tbody>
-		</table>
-		<table class="table table-striped">
-			<thead>
-               <tr>
-                 <th align="center">DIAGNOSTICO DEFINITIVO</th>
-               </tr>
-             </thead>
-             <tbody>
-                <tr>
-                  <td align="justify"><pre style="white-space: pre-line;" th:text="${historia.diagnostico}"></pre></td>
-                </tr>
-              </tbody>
-		</table>
-		<table th:if="${historia.tratamiento != ''}" class="table table-striped">
-			<thead>
-               <tr>
-                 <th align="center">TRATAMIENTO</th>
-               </tr>
-             </thead>
-             <tbody>
-                <tr>
-                  <td align="justify"><pre style="white-space: pre-line;" th:text="${historia.tratamiento}"></pre></td>
-                </tr>
-              </tbody>
-		</table>
+			<div>
+				<strong>CAUSA DE CONSULTA</strong>
+				<pre style="white-space: pre-line;" th:text="${historia.ingresomodel.cconsulta}"></pre>
+			</div>
+			<div>
+				<strong>MOTIVO DE CONSULTA</strong>
+				<pre style="white-space: pre-line;" th:text="${historia.mconsulta}"></pre>
+			</div>
+			<div th:if="${historia.etopografia != ''}">
+				<strong>EXPLORACION DERMATOLÓGICA - TOPOGRAFÍA</strong>
+				<pre style="white-space: pre-line;" th:text="${historia.etopografia}"></pre>
+			</div>
+			<div th:if="${historia.emorfologia != ''}">
+				<strong>EXPLORACION DERMATOLÓGICA - MORFOLOGÍA</strong>
+				<pre style="white-space: pre-line;" th:text="${historia.emorfologia}"></pre>
+			</div>
+			<div th:if="${historia.eresto != ''}">
+				<strong>EXPLORACION DERMATOLÓGICA - RESTO DE PIEL Y ANEXOS</strong>
+				<pre style="white-space: pre-line;" th:text="${historia.eresto}"></pre>
+			</div>
+			<div>
+				<strong>INTERROGATORIO</strong>
+				<pre style="white-space: pre-line;" th:text="${historia.interrogatorio}"></pre>
+			</div>
+			<div th:if="${historia.afamiliares != ''}">
+				<strong>ANTECENDENTES FAMILIARES</strong>
+				<pre style="white-space: pre-line;" th:text="${historia.afamiliares}"></pre>
+			</div>
+			<div th:if="${historia.apersonales != ''}">
+				<strong>ANTECENDENTES PERSONALES</strong>
+				<pre style="white-space: pre-line;" th:text="${historia.apersonales}"></pre>
+			</div>
+			<div>
+				<strong>EXPLORACIÓN FÍSICA GENERAL</strong>
+				<pre style="white-space: pre-line;" th:text="${historia.efgeneral}"></pre>
+			</div>
+			<div th:if="${historia.escomplementario != ''}">
+				<strong>ESTUDIOS COMPLEMENTARIOS</strong>
+				<pre style="white-space: pre-line;" th:text="${historia.escomplementario}"></pre>
+			</div>
+			<div>
+				<strong>DIAGNOSTICO DEFINITIVO</strong>
+				<pre style="white-space: pre-line;" th:text="${historia.diagnostico}"></pre>
+			</div>
+			<div th:if="${historia.tratamiento != ''}">
+				<strong>TRATAMIENTO</strong>
+				<pre style="white-space: pre-line;" th:text="${historia.tratamiento}"></pre>
+			</div>
         </div>
 	</div>
-    
-
 
     <div class="row">
       <!-- accepted payments column -->
