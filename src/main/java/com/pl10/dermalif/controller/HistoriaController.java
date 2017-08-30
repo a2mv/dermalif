@@ -151,6 +151,16 @@ public class HistoriaController {
 		return model;
 	}
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_DOCUMENTO')")
+	@GetMapping("reporttratamiento")
+	public ModelAndView reporteTratamiento(@RequestParam(name="id", required=false) String id){
+		LOG.info("METHOD: reporteTratamiento() -- PARAMS: id=" + id);
+		ModelAndView model = new ModelAndView(ViewConstant.DOCS_TRATAMIENTO);
+		HistoriaModel historiaModel = historiaService.findHistoriaModelById(id);
+		model.addObject("historia",historiaModel);
+		return model;
+	}
+	
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_HISTORIA')")
 	@GetMapping("userhistory")
 	public ModelAndView requestViewHistoryUser(){

@@ -83,7 +83,9 @@
                 	<td><a href="#" th:href="@{'/historia/reporthistoria?id='+${historia.id}}" target="_blank">
                 			<span class="btn btn-block btn-success btn-xs"><i class="fa fa-print"></i> Historia</span>
                 		</a></td>
-                	<td><a href="#"><span class="btn btn-block btn-success btn-xs">Tratamiento</span></a></td>
+                	<td><a href="#" th:href="@{'/historia/reporttratamiento?id='+${historia.id}}" target="_blank">
+                			<span class="btn btn-block btn-success btn-xs"><i class="fa fa-print"></i> Tratamiento</span>
+                		</a></td>
                 </tr>             
                 </tbody>
               </table>
