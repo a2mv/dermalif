@@ -54,6 +54,9 @@ public class StorageServiceImpl implements StorageService {
 			Person person = personRepository.findById(filename);
 			Resource resource;
 			if(person != null) {
+				if(person.getImageprofile()==null) {
+					person.setImageprofile("/static/dist/img/avatar5.png");
+				}
 				Path file = rootLocation.resolve(person.getImageprofile());
 				resource = new UrlResource(file.toUri());
 			}else {

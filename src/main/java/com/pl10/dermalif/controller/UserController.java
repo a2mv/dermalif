@@ -106,8 +106,6 @@ public class UserController {
 		PersonModel personModel = new PersonModel();
 		if(!"0".equals(id)){
 			personModel = personService.findPersonModelById(id);
-		}else{
-			personModel.setImageprofile("/dist/img/avatar5.png");
 		}
 		personModel = personService.repairCityModel(personModel);	
 		//ROLE
@@ -240,14 +238,7 @@ public class UserController {
 			return "redirect:/user";
 		}else{
 			if (!file.isEmpty()) {
-				
 				storageService.store(file, id);
-				//BufferedImage src = ImageIO.read(new ByteArrayInputStream(file.getBytes()));
-				//File destination = new File(webappRoot + "/profile-pictures/ProfileImage"+id+".png");
-				//ImageIO.write(src, "png", destination);
-				//PersonModel personModel = personService.findPersonModelById(id);
-				//personModel.setImageprofile("/profile-pictures/ProfileImage"+id+".png");
-				//personService.addPersonModel(personModel);
 			}
 			return "redirect:/user/usuarioform?id="+id;			
 		}
