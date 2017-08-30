@@ -16,6 +16,6 @@ public class ViewConstant {
 	public static String VIEW_ARTICNEW = "facturacion/articulo";
 	public static String VIEW_FORMARTICNEW = "facturacion/newarticulo";
 	public static String VIEW_LOGIN ="login";
-	public static String DOCS_HISTORIA = "/documentos/historia";
-	public static String DOCS_TRATAMIENTO = "/documentos/tratamiento";
+	public static String DOCS_HISTORIA = "documentos/historia";
+	public static String DOCS_TRATAMIENTO = "documentos/tratamiento";
 }
