@@ -97,8 +97,8 @@ public class UserController {
 		return ViewConstant.VIEW_USERS;
 	}
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping("/usuarioform")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	public ModelAndView requestUserForm(@RequestParam(name="id", required=false) String id){
 		LOG.info("METHOD: requestUserForm() -- PARAMS: "+id);
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

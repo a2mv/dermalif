@@ -16,5 +16,11 @@ Software para gestión de consultorio de dermatologia.
 - Admisiones
   - Gestión de pacientes
   - Ingresos a consulta
+  - Historial de ingresos
 - Historia Clínica
   - Gestión de historias clínicas
+  - Historial de historias clínicas por pacientes
+  - Documento imprimible de historia clínica
+  - Documento imprimible de tratamiento (Receta médica)
+- Facturación
+  - Gestión de articulos para facturación

@@ -15,46 +15,22 @@
             <div class="box-body">
             	
             
-              <table id="example1" class="table table-striped">
+              <table id="articulotable" class="table table-striped">
                 <thead>
                 <tr>
-                  <th>ID Articulo</th>
+                  <th>Código</th>
                   <th>Descripción</th>
                   <th>Valor</th>
+                  <th>Estado</th>
                   <th></th>
                 </tr>
                 </thead>
-                <tbody>
-                <tr>
-                  <td>001</td>
-                  <td>Producto uno</td>
-                  <td>65000</td>
-                  <td><a href="#" th:href="@{/factura/newformarticulo}"><span class="btn btn-block btn-primary btn-xs">Editar</span></a></td>
-                </tr>
-                <tr>
-                  <td>002</td>
-                  <td>Producto dos</td>
-                  <td>67000</td>
-                  <td><a href="#" ><span class="btn btn-block btn-primary btn-xs">Editar</span></a></td>
-                </tr>
-                <tr>
-                  <td>003</td>
-                  <td>Producto tres</td>
-                  <td>58000</td>
-                  <td><a href="#" ><span class="btn btn-block btn-primary btn-xs">Editar</span></a></td>
-                </tr>
-                <tr>
-                  <td>004</td>
-                  <td>Producto cuatro</td>
-                  <td>122000</td>
-                  <td><a href="#" ><span class="btn btn-block btn-primary btn-xs">Editar</span></a></td>
-                </tr>
-                </tbody>
               </table>
               <br/>
-              <button type="button" class="btn btn-primary" style="margin-right: 5px;">
-            		<i class="fa glyphicon glyphicon-plus"></i> Agregar
-   			</button>
+              <div th:if="${result == 1}" class="alert alert-success" role="alert">¡Agregado exitosamente!</div>
+              <div th:if="${result == 0}" class="alert alert-danger" role="alert">Error Adding artículo!</div>
+              <a th:href="@{/factura/newformarticulo?id=0}" class="btn btn-primary" style="margin-right: 5px;">
+            		<i class="fa glyphicon glyphicon-plus"></i> Agregar	</a>
               	
             </div>
             <!-- /.box-body -->

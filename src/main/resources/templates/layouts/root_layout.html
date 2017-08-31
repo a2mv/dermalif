@@ -166,7 +166,7 @@
 			            	<a href="#" th:href="@{/factura/ingresos}"><i class="fa fa-file-text-o"></i>Facturas</a>
 			           	</li>
 			            <li th:classappend="${lvm.ubicacion}==${T(com.pl10.dermalif.constant.HrefConstant).HREF_NEWARTICULO} ? active">
-			            	<a href="#" th:href="@{/factura/newarticulo}"><i class="fa fa-plus-square-o"></i>Articulos</a>
+			            	<a href="#" th:href="@{/factura/articulo}"><i class="fa fa-plus-square-o"></i>Articulos</a>
 			           	</li>
 			          </ul>
 			        </li>
@@ -506,6 +506,49 @@
 					            	}
 					            },
 					            
+					        ]
+					    });
+					
+					$('#articulotable').DataTable({
+						"lengthChange": false,  
+						"ordering": false,
+					      "autoWidth": true,					      
+							"bProcessing": true,
+							"bServerSide": true,
+							"sort": "position",
+							"bStateSave": false,
+							//"iDisplayLength": 10,
+							"iDisplayStart": 0,
+							"fnDrawCallback": function () {
+							},
+							"sAjaxSource": "/dermalif/factura/allarticulo",							
+							"aoColumns": [
+					            { "mData": "codigo" },
+					            { "mData": "name"  	},
+					            { "mData": null,
+					            	"bSortable": false,
+					            	"mRender": function(data) {
+					           			return '$'+data.valor;
+					            	}
+					            },
+					            { "mData": null,
+					            	"bSortable": false,
+					            	"mRender": function(data) {
+					            		var retorno = "";
+					            		if(data.enable==true){
+					            			retorno = '<span class="label-info label">ACTIVO</span>';
+					            		}else if(data.enable==false){
+					            			retorno = '<span class="label-warning label">INACTIVO</span>';
+					            		}
+					           			return retorno;
+					            	}
+					            },
+					            { "mData": null,
+					            	"bSortable": false,
+					            	"mRender": function(data) {
+					           		return '<a href="/dermalif/factura/newformarticulo?id='+ data.id +'"><span class="btn btn-block btn-default btn-xs">Editar</span></a>';
+					            	}
+					            },
 					        ]
 					    });
 					

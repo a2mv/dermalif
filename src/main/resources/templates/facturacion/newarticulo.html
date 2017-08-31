@@ -8,42 +8,51 @@
 <body>
 	<!-- Main content -->
 	<div layout:fragment="page-content">
-		<div class="row">			
-			<div class="col-md-9">
 				<div class="box box-primary">
 					<div class="box-header with-border">
 						<h3 class="box-title">Datos del articulo</h3>
 					</div>
-					<!-- /.box-header -->
-					<form class="form-horizontal">
+					<!-- /.box-header -->					
 					<div class="box-body">
-		        		<div class="form-group required"><label class="col-md-4 control-label">ID Articulo:</label>
+					<form class="form-horizontal" action="#" th:action="@{/factura/addarticulo}" th:object="${articulo}" method="post">
+						<input type="hidden" th:field="*{id}"></input>
+		        		<div class="form-group required"><label class="col-md-4 control-label">Código:</label>
 		        			<div class="col-md-5">
-		        				<input class="form-control" type="text" placeholder="Ej. 007"/>
+		        				<input class="form-control" type="text" th:field="*{codigo}" th:value="${codigo}" placeholder="Ej. 007"/>
+		        				<span style="Color:red;"  th:if="${#fields.hasErrors('codigo')}" th:errors="*{codigo}"></span>
 		        			</div>
 		        		</div>
 		        		<div class="form-group required"><label class="col-md-4 control-label">Nombre articulo:</label>
 		        			<div class="col-md-5">
-		        				<input class="form-control" type="text" placeholder="Escriba nombre del articulo"/>
+		        				<input class="form-control" type="text" th:field="*{name}" th:value="${name}" placeholder="Escriba nombre del articulo"/>
+		        				<span style="Color:red;"  th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
 		        			</div>
 		        		</div>
 		        		<div class="form-group required"><label class="col-md-4 control-label">Valor:</label>
 		        			<div class="col-md-5">
-		        				<input class="form-control" type="text" placeholder="Ej. 67000"/>
+		        				<input class="form-control" type="text" th:field="*{valor}" th:value="${valor}" placeholder="Ej. 67000"/>
+		        				<span style="Color:red;"  th:if="${#fields.hasErrors('valor')}" th:errors="*{valor}"></span>
 		        			</div>
-		        		</div>		        		
+		        		</div>	
+		        		<div class="form-group"><label class="col-md-4 control-label">Activo:</label>
+		        			<div class="col-md-5">
+		        				<input class="checkbox" type="checkbox" th:field="*{enable}" th:value="${enable}"/>
+		        			</div>
+		        		</div>	
+		        		<br/>
+		        		<div class="form-group">
+	             			<div class="col-sm-offset-2 col-sm-10">
+	               				<button type="submit" class="btn btn-primary">Guardar</button>
+	             			</div>
+           				</div>
+		        	</form>	        		
 					</div>
-					<!-- /.box-body -->
-					<div class="form-group">
-             			<div class="col-sm-offset-2 col-sm-10">
-               				<button type="submit" class="btn btn-primary">Guardar</button>
-             			</div>
-           			</div>
-           			<br/>
-					</form>
+					<!-- /.box-body  -->
+					
+           			
+					
 				</div>
-			</div>
-		</div>			
-	</div>
+			</div>		
+
 </body>
 </html>

@@ -13,7 +13,7 @@ public class ViewConstant {
 	public static String VIEW_HISTORYHC = "historia/historyxhc";
 	public static String VIEW_FACTINGRESOS = "facturacion/ingreso";
 	public static String VIEW_FACTNEW = "facturacion/add";
-	public static String VIEW_ARTICNEW = "facturacion/articulo";
+	public static String VIEW_ARTICULO = "facturacion/articulo";
 	public static String VIEW_FORMARTICNEW = "facturacion/newarticulo";
 	public static String VIEW_LOGIN ="login";
 	public static String DOCS_HISTORIA = "documentos/historia";
