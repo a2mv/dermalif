@@ -31,18 +31,18 @@ public class FacturaServiceImpl implements FacturaService {
 	@Autowired
 	@Qualifier("facturaDslRepository")
 	FacturaDslRepository facturaDslRepository;
-	
+
 	@Autowired
 	@Qualifier("ingresoConverter")
 	IngresoConverter ingresoConverter;
-	
+
 	@Autowired
 	@Qualifier("ingresoRepository")
 	IngresoRepository ingresoRepository;
 
 	@Override
-	public FacturaModel addFactura(FacturaModel facturaModel) {		
-		anularFactura(facturaModel.getIngresomodel());		
+	public FacturaModel addFactura(FacturaModel facturaModel) {
+		anularFactura(facturaModel.getIngresomodel());
 		Factura factura = facturaConverter.facturaModelToFactura(facturaModel);
 		return facturaConverter.facturaToFacturaModel(facturaRepository.save(factura));
 	}
@@ -50,10 +50,10 @@ public class FacturaServiceImpl implements FacturaService {
 	@Override
 	public Integer generarConsecutivo() {
 		Factura factura = facturaDslRepository.searchLastFactura();
-		Integer consecutivo=0;
-		if(factura==null) {
+		Integer consecutivo = 0;
+		if (factura == null) {
 			consecutivo = 1;
-		}else {
+		} else {
 			consecutivo = factura.getIdfactura() + 1;
 		}
 		return consecutivo;
@@ -61,7 +61,7 @@ public class FacturaServiceImpl implements FacturaService {
 
 	@Override
 	public boolean existFactura(Integer idFactura) {
-		if(facturaRepository.findByIdfactura(idFactura)!=null) {
+		if (facturaRepository.findByIdfactura(idFactura) != null) {
 			return true;
 		}
 		return false;
@@ -80,7 +80,7 @@ public class FacturaServiceImpl implements FacturaService {
 	@Override
 	public void anularFactura(IngresoModel ingresoModel) {
 		List<Factura> facturas = facturaRepository.findByIngreso(ingresoConverter.ingresoModelToIngreso(ingresoModel));
-		for(Factura factura:facturas) {
+		for (Factura factura : facturas) {
 			factura.setEstado("ANULADO");
 			facturaRepository.save(factura);
 		}
@@ -90,12 +90,25 @@ public class FacturaServiceImpl implements FacturaService {
 	public List<FacturaModel> findFacturaModelByIngresoModel(IngresoModel ingresoModel) {
 		List<Factura> facturas = facturaRepository.findByIngreso(ingresoConverter.ingresoModelToIngreso(ingresoModel));
 		List<FacturaModel> facturaModels = new ArrayList<FacturaModel>();
-		for(Factura factura: facturas) {
+		for (Factura factura : facturas) {
 			facturaModels.add(facturaConverter.facturaToFacturaModel(factura));
 		}
 		return facturaModels;
 	}
-	
-	
+
+	@Override
+	public List<FacturaModel> searchListFacturaModel(String str, int page) {
+		List<Factura> facturas = facturaDslRepository.searchAllDataFacturas(str, page);
+		List<FacturaModel> facturaModels = new ArrayList<FacturaModel>();
+		for (Factura factura : facturas) {
+			facturaModels.add(facturaConverter.facturaToFacturaModel(factura));
+		}
+		return facturaModels;
+	}
+
+	@Override
+	public Long countSearchListFacturaModel(String str) {
+		return facturaDslRepository.countSearchAllDataFacturas(str);
+	}
 
 }

@@ -499,6 +499,83 @@
 					        ]
 					    });
 					
+					$('#facturas').DataTable({
+						"lengthChange": false,  
+						"responsive": true,
+						"ordering": false,
+					      "autoWidth": true,					      
+							"bProcessing": true,
+							"bServerSide": true,
+							"sort": "position",
+							"bStateSave": false,
+							//"iDisplayLength": 10,
+							"iDisplayStart": 0,
+							"fnDrawCallback": function () {
+							},
+							"sAjaxSource": "/dermalif/factura/allfactura",	
+							"aoColumns": [
+								{ "mData": null,
+					            	"bSortable": false,
+					            	"mRender": function(data) {
+					           			return 'NO'+data.ingresomodel.norden;
+					            	}
+					            },
+					            { "mData": null, 
+					            	"bSortable": false,
+					            	"mRender": function(data) {
+					            		return data.idfactura;
+					            	}
+					            },
+					            { "mData": null,
+					            	"bSortable": false,
+					            	"mRender": function(data) {
+					           			return data.fechaFormat;
+					            	}
+					            },
+					            { "mData": null,
+					            	"bSortable": false,
+					            	"mRender": function(data) {
+					            		return data.ingresomodel.personModel.tdocumento+' - '+data.ingresomodel.personModel.ndocumento;
+					            	}
+					            },
+					            { "mData": null,
+					            	"bSortable": false,
+					            	"mRender": function(data) {
+					           			return data.ingresomodel.personModel.firstname+' '+data.ingresomodel.personModel.lastname;
+					            	}
+					            },
+					            { "mData": null,
+					            	"bSortable": false,
+					            	"mRender": function(data) {
+					            		var retorno = "";
+					            		if(data.estado=='NUEVO'){
+					            			retorno = '<span class="label-primary label">'+data.estado+'</span>';
+					            		}else if(data.estado=='ANULADO'){
+					            			retorno = '<span class="label-warning label">'+data.estado+'</span>';
+					            		}else if(data.estado=='FINALIZADO'){
+					            			retorno = '<span class="label-success label">'+data.estado+'</span>';
+					            		}
+					           			return retorno;
+					            	}
+					            
+					            },
+					            { "mData": null,
+					            	"bSortable": false,
+					            	"mRender": function(data) {
+					            		var div = "";
+					            		div += '<div class="dropdown">';
+					            		div += '<button class="btn btn-default dropdown-toggle btn-xs" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Acciones <span class="caret"></span></button>';
+					            		div += '<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">';
+					            		div += '<li><a href="/dermalif/factura/new?factura='+ data.id +'">Facturar</a></li>';
+					            		div += '<li><a href="/dermalif/factura/anulafactura?factura='+ data.id +'">Anular</a></li>';
+					            		div += '</ul>';
+					            		div += '</div>';					            		
+					            		return 	div;
+					            	}
+					            },
+					        ]
+					    });
+					
 					$('#userhistoria').DataTable({
 						"lengthChange": false,  
 						"ordering": false,

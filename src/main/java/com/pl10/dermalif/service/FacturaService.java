@@ -22,4 +22,8 @@ public interface FacturaService {
 	
 	public abstract List<FacturaModel> findFacturaModelByIngresoModel(IngresoModel ingresoModel);
 	
+	public List<FacturaModel> searchListFacturaModel(String str, int page);
+	
+	public abstract Long countSearchListFacturaModel(String str);
+	
 }

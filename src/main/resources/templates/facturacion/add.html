@@ -79,6 +79,10 @@
 	            	<div class="form-group"><label class="control-label">ESTADO:</label></div>
 	            	<h4><strong><span class="text-warning" th:text="${factura.estado}"></span></strong></h4>	            	
 	            </div>
+	            <div th:if="${factura.estado == 'FINALIZADO'}" class="col-md-3">
+	            	<div class="form-group"><label class="control-label">ESTADO:</label></div>
+	            	<h4><strong><span class="text-primary" th:text="${factura.estado}"></span></strong></h4>	            	
+	            </div>
             </div>
             
             <hr />
@@ -162,9 +166,7 @@
              <div class="row no-print">
         		<div th:if="${factura.estado == 'NUEVO'}" class="col-xs-12">
         			<a th:href="@{'/factura/reportfactura?id='+${factura.id}}" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Imprimir</a>		
-          			<button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;">
-            		<i class="fa fa-download"></i> Generar PDF
-          			</button>
+        			<a th:href="@{'/factura/cerrarfactura?factura='+${factura.id}}" class="btn btn-primary pull-right"><i class="fa fa-lock"></i> Cerrar Factura</a>	
         		</div>
       		</div>
               

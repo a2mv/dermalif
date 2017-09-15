@@ -1,5 +1,6 @@
 package com.pl10.dermalif.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class FacturaModel {
@@ -112,6 +113,10 @@ public class FacturaModel {
 
 	public void setIva(Double iva) {
 		this.iva = iva;
+	}
+	
+	public String getFechaFormat() {
+		return new SimpleDateFormat("yyyy-MM-dd hh:mm a").format(fecha);
 	}
 
 	@Override

@@ -374,7 +374,7 @@ public class UserController {
 	@PostMapping("anulaingreso")
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_INGRESO')")
 	public String anulaIngreso(@ModelAttribute(name="idIngreso") String id) throws ParseException{
-		LOG.info("METHOD: changeUpdate() -- PARAMS: idIngreso=" + id);
+		LOG.info("METHOD: anulaIngreso() -- PARAMS: idIngreso=" + id);
 		IngresoModel ingresoModel = ingresoService.findIngresoModelById(id);
 		if(ingresoModel.getTstatus()==TypeIngresoStatus.ANULADO) {
 			return "redirect:/user/ingresosview?result=4";

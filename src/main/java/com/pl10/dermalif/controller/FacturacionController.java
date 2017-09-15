@@ -1,6 +1,7 @@
 package com.pl10.dermalif.controller;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
@@ -35,6 +36,7 @@ import com.pl10.dermalif.enums.TypeIngresoStatus;
 import com.pl10.dermalif.model.ArticuloAjaxResponse;
 import com.pl10.dermalif.model.ArticuloJsonObject;
 import com.pl10.dermalif.model.ArticuloModel;
+import com.pl10.dermalif.model.FacturaJsonObject;
 import com.pl10.dermalif.model.FacturaModel;
 import com.pl10.dermalif.model.FacturadescModel;
 import com.pl10.dermalif.model.IngresoModel;
@@ -80,7 +82,7 @@ public class FacturacionController {
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_FACTURA')")
 	@GetMapping("ingresos")
-	public ModelAndView requestIngresosFact(@RequestParam(name="result", required=false) String result){
+	public ModelAndView requestIngresosFact(@RequestParam(name="result", required=false) Integer result){
 		LOG.info("METHOD: requestIngresosFact() --PARAMS: result="+result);
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		PersonModel personsecurity = userService.userConverter(user);
@@ -91,12 +93,8 @@ public class FacturacionController {
 		lvm.setDescripcion("Aquí puedes ver los ingresos y facturas");
 		model.addObject("lvm",lvm);
 		model.addObject("personsecurity",personsecurity);
-		model.addObject("result","0");
-		//error de generacion de factura
-		if(result.equals("1")) {
-			model.addObject("result",1);
-		}
-		LOG.info("Returning to "+ViewConstant.VIEW_FORMHC+" view");		
+		model.addObject("result",result);
+		LOG.info("Returning to "+ViewConstant.VIEW_FACTINGRESOS+" view");		
 		return model;
 	}
 	
@@ -347,12 +345,52 @@ public class FacturacionController {
 		ModelAndView model = new ModelAndView(ViewConstant.DOCS_FACTURA);		
 		FacturaModel facturaModel = facturaService.findFacturaModelById(id);
 		PersonModel personModel = personService.findPersonModelByEmail(facturaModel.getUser());
-		List<FacturadescModel> facturadescModels = facturadescService.findFacturadescModelByFactura(facturaModel);
-		
+		List<FacturadescModel> facturadescModels = facturadescService.findFacturadescModelByFactura(facturaModel);		
 		model.addObject("factura",facturaModel);
 		model.addObject("person",personModel);
 		model.addObject("facturadesc",facturadescModels);
 		return model;
+	}
+	
+	@RequestMapping(value = {"/allfactura"}, method = RequestMethod.GET, produces = "application/json")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_FACTURA')")
+	public @ResponseBody FacturaJsonObject allFacturaDataTables(HttpServletRequest request){
+		Integer pageNumber = 0;
+		if (null != request.getParameter("iDisplayStart")){
+			pageNumber = (Integer.valueOf(request.getParameter("iDisplayStart"))/10)+1;
+		}
+		String searchParameter = request.getParameter("sSearch");	
+		
+		List<FacturaModel> facturaModels = facturaService.searchListFacturaModel(searchParameter, pageNumber);		
+		Long countRecords = facturaService.countSearchListFacturaModel(searchParameter);
+		FacturaJsonObject facturaJsonObject = new FacturaJsonObject();		
+		facturaJsonObject.setiTotalDisplayRecords(countRecords.intValue());		
+		facturaJsonObject.setiTotalRecords(countRecords.intValue());
+		facturaJsonObject.setAaData(facturaModels);
+		return facturaJsonObject;
+	}
+	
+	@GetMapping("anulafactura")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_FACTURA')")
+	public String anulaFactura(@ModelAttribute(name="factura") String id) throws ParseException{
+		LOG.info("METHOD: anulaFactura() -- PARAMS: factura=" + id);
+		FacturaModel facturaModel = facturaService.findFacturaModelById(id);		
+		if(facturaModel.getEstado().equals("ANULADO")) {
+			return "redirect:/factura/ingresos?result=2";
+		}
+		facturaModel.setEstado("ANULADO");
+		facturaService.addFactura(facturaModel);
+		return "redirect:/factura/ingresos?result=3";
+	}
+	
+	@GetMapping("cerrarfactura")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_FACTURA')")
+	public String cerrarFactura(@ModelAttribute(name="factura") String id) throws ParseException{
+		LOG.info("METHOD: anulaFactura() -- PARAMS: factura=" + id);
+		FacturaModel facturaModel = facturaService.findFacturaModelById(id);			
+		facturaModel.setEstado("FINALIZADO");
+		facturaService.addFactura(facturaModel);
+		return "redirect:/factura/new?factura="+id;
 	}
 	
 }
