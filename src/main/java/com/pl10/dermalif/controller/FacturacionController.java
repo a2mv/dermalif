@@ -100,8 +100,6 @@ public class FacturacionController {
 		return model;
 	}
 	
-	
-	
 	@GetMapping("articulo")
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_FACTURA')")
 	public ModelAndView requestArticulo(){

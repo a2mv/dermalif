@@ -42,8 +42,8 @@ public class ArticuloDslRepository {
 		JPAQuery<Articulo> query = new JPAQuery<Articulo>(em);
 		List<Articulo> articulos = query.select(qArticulo).from(qArticulo)
 				.where(qArticulo.name.contains(str)
-				.or(qArticulo.codigo.contains(str)
-				.and(qArticulo.enable.eq(true))))				
+				.or(qArticulo.codigo.contains(str))
+				.and(qArticulo.enable.isTrue()))				
 				.limit(7).fetch();
 		return articulos;
 	}
