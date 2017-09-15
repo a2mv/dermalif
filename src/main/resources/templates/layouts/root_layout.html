@@ -139,7 +139,7 @@
 				          	<a href="#" th:href="@{/user/citas}"><i class="fa fa-calendar-o"></i>Citas</a>
 				          </li>
 				          <li th:classappend="${lvm.ubicacion}==${T(com.pl10.dermalif.constant.HrefConstant).HREF_INGRESO} ? active">
-				          	<a href="#" th:href="@{/user/ingresosview}"><i class="fa fa-folder-open-o"></i>Ingresos</a>
+				          	<a href="#" th:href="@{/user/ingresosview?result=2}"><i class="fa fa-folder-open-o"></i>Ingresos</a>
 				          </li>
 			          </ul>
 			        </li>
@@ -163,7 +163,7 @@
 			          </a>
 			          <ul class="treeview-menu">
 			          	<li th:classappend="${lvm.ubicacion}==${T(com.pl10.dermalif.constant.HrefConstant).HREF_FACTINGR} ? active">
-			            	<a href="#" th:href="@{/factura/ingresos}"><i class="fa fa-file-text-o"></i>Facturas</a>
+			            	<a href="#" th:href="@{/factura/ingresos?result=0}"><i class="fa fa-file-text-o"></i>Facturas</a>
 			           	</li>
 			            <li th:classappend="${lvm.ubicacion}==${T(com.pl10.dermalif.constant.HrefConstant).HREF_NEWARTICULO} ? active">
 			            	<a href="#" th:href="@{/factura/articulo}"><i class="fa fa-plus-square-o"></i>Articulos</a>
@@ -241,7 +241,7 @@
 			      Software de historias clínicas
 			    </div>
 			    <!-- Default to the left -->
-			    <strong>Copyright &copy; 2017 <a href="http://pl10.com.co/" target="_blank">pl10.com.co</a></strong> Todos los derechos reservados.
+			    <strong>Copyright &copy; 2017 <a href="http://pl10.com.co/" target="_blank">PL10</a></strong> Todos los derechos reservados.
 			  </footer>
 		</div>
 		<!-- ./wrapper -->
@@ -264,6 +264,8 @@
 		<script th:src="@{/plugins/fullcalendar/fullcalendar.min.js}"></script>
 		<!-- bootstrap time picker -->
 		<script th:src="@{/plugins/timepicker/bootstrap-timepicker.min.js}"></script>
+		<!-- notifyjs -->
+		<script th:src="@{/plugins/notifyjs/notify.min.js}"></script>
 		
 		<!-- AdminLTE App -->
 		<script th:src="@{/dist/js/app.min.js}"></script>
@@ -291,7 +293,7 @@
 			 	};
 		     
 		     //var data = [{ 'id': 0, 'text': 'enhancement' }];
-				jQuery(function () {
+				
 
 					
 					jQuery("#ciudad1").select2({
@@ -334,13 +336,43 @@
 		    					return queryParameters;
 		    				},
 		    				processResults: function (data) {
-		    					return {
+		    					return {		    						
 		    						results: data
 		    					};
 		    				},
 		    				cache: true,
 		  	            }
 					});
+					
+					jQuery("#articulo").select2({
+		  				language: "es",
+		  	            placeholder: 'Seleccione',
+		  	          	minimumInputLength:'2',
+		  	            ajax: {
+		  	            	delay: 250,
+		    				url: function (params) {
+		    					return '/dermalif/factura/search/articulo';
+		    				},
+		    				data: function (params) {
+		    					var queryParameters = {
+		    					 	searchString: params.term
+		    					}
+		    					return queryParameters;
+		    				},
+		    				processResults: function (data) {
+		    					return {		    						
+		    						results: data
+		    					};
+		    				},
+		    				cache: true,
+		  	            }
+					}).on('change', function(){
+						var idArticulo = this.value;
+						$.get("/dermalif/factura/search/articulo/id?id="+idArticulo, function(data){
+							$("#fact-valor-product").val(data.valor);
+						});
+					});
+					
 					
 					$('#useradmision').DataTable({
 						"lengthChange": false,  
@@ -433,34 +465,35 @@
 					            	"bSortable": false,
 					            	"mRender": function(data) {
 					            		var retorno = "";
-					            		if(data.tstatus=='EN_CURSO'){
-					            			retorno = '<span class="label-info label">'+data.tstatus+'</span>';
-					            		}else if(data.tstatus=='PAGADO'){
+					            		if(data.tstatus=='INGRESADO'){
+					            			retorno = '<span class="label-default label">'+data.tstatus+'</span>';
+					            		}else if(data.tstatus=='EN_CURSO'){
+					            			retorno = '<span class="label-primary label">'+data.tstatus+'</span>';
+					            		}else if(data.tstatus=='FACTURADO'){
 					            			retorno = '<span class="label-success label">'+data.tstatus+'</span>';
-					            		}else if(data.tstatus=='PENDIENTE'){
-					            			retorno = '<span class="label-danger label">'+data.tstatus+'</span>';
+					            		}else if(data.tstatus=='FINALIZADO'){
+					            			retorno = '<span class="label-info label">'+data.tstatus+'</span>';
 					            		}else if(data.tstatus=='ANULADO'){
 					            			retorno = '<span class="label-warning label">'+data.tstatus+'</span>';
 					            		}
 					           			return retorno;
 					            	}
+					            
 					            },
 					            { "mData": null,
 					            	"bSortable": false,
 					            	"mRender": function(data) {
-					           		return '<a href="/dermalif/historia/hcform?id='+ data.id +'"><span class="btn btn-block btn-primary btn-xs">Historia</span></a>';
-					            	}
-					            },
-					            { "mData": null,
-					            	"bSortable": false,
-					            	"mRender": function(data) {
-					           		return '<a href="#"><span class="btn btn-block btn-default btn-xs">Facturar</span></a>';
-					            	}
-					            },
-					            { "mData": null,
-					            	"bSortable": false,
-					            	"mRender": function(data) {
-					           		return '<a data-toggle="modal" data-id="'+ data.id +'" href="#myModal" class="open-Modal"><span class="btn btn-block btn-default btn-xs">Hora</span></a>';
+					            		var div = "";
+					            		div += '<div class="dropdown">';
+					            		div += '<button class="btn btn-default dropdown-toggle btn-xs" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Acciones <span class="caret"></span></button>';
+					            		div += '<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">';
+					            		div += '<li><a href="/dermalif/historia/hcform?id='+data.id+'">Historia</a></li>';
+					            		div += '<li><a data-toggle="modal" href="#myModalFactura" data-id="'+ data.id +'" class="open-Modal-fact">Facturar</a></li>';
+					            		div += '<li><a data-toggle="modal" data-id="'+ data.id +'" href="#myModal" class="open-Modal">Hora</a></li>';
+					            		div += '<li><a data-toggle="modal" data-id="'+ data.id +'" href="#myModalanula" class="open-Modal-anulaing">Anular</a></li>';
+					            		div += '</ul>';
+					            		div += '</div>';					            		
+					            		return 	div;
 					            	}
 					            },
 					        ]
@@ -552,10 +585,159 @@
 					        ]
 					    });
 					
+					$('#factura').DataTable({
+						"lengthChange": false,  
+						"ordering": false,
+					      "autoWidth": true,					      
+							"bProcessing": true,
+							"bServerSide": true,
+							"sort": "position",
+							"bStateSave": false,
+							//"iDisplayLength": 10,
+							"iDisplayStart": 0,
+							"fnDrawCallback": function () {
+							},
+							"sAjaxSource": "/dermalif/factura/allfactura",							
+							"aoColumns": [
+					            { "mData": "norden" },
+					            { "mData": "name"  	},//aki va factura
+					            { "mData": "fechaformat"		},
+					            { "mData": null,
+					            	"bSortable": false,
+					            	"mRender": function(data) {
+					           			return data.personModel.tdocumento+' - '+data.personModel.ndocumento;
+					            	}
+					            },
+					            { "mData": null,
+					            	"bSortable": false,
+					            	"mRender": function(data) {
+					           			return data.personModel.firstname+' '+data.personModel.lastname;
+					            	}
+					            },
+					        ]
+					    });
+					
 					$(document).on("click", ".open-Modal", function () {
 						var myDNI = $(this).data('id');
 						$(".modal-body #DNI").val( myDNI );						
 						});
+					
+					$(document).on("click", ".open-Modal-fact", function () {
+						var myDNI = $(this).data('id');						
+						$(".modal-body #idIngreso").val( myDNI );
+						$.get('/dermalif/factura/getconsecutivo').done(function(data) {		
+							$(".modal-body #idFact").val( data );
+					   });
+					});
+						
+					$(document).on("click", ".open-Modal-anulaing", function () {
+						var myDNI = $(this).data('id');
+						$(".modal-body #idIngreso").val( myDNI );						
+						});
+					
+					var counter = $("#table-factura tr").length;;
+					  $("#addrow").on("click", function () {
+						  try{
+							  if($("#fact-cant-product").val()>0){
+								  var articulo = $('#articulo').select2('data');
+								  var factura = facturar($("#fact-cant-product").val(),$("#fact-valor-product").val() );	
+								  $.get('/dermalif/factura/addarticulo', {
+									  id: articulo[0].id,
+									  idf: $("#idfactura").val(),
+									  cantidad: factura.cantidadf,
+									  valorart: factura.valorf,
+									  importe: factura.importef,
+									  iva: $("#fact-iva").val(),
+								  }).done(function(data) {
+									  crearcelda(data, articulo, factura);
+								  });									  
+							  }else{
+								  $.notify("Agregue una cantidad", "error");
+							  }
+						  }catch(e){
+							  $.notify(e, "error");
+						  }						 
+					  });
+					  
+					  $("table.table-striped").on("click", ".ibtnDel", function (event) {					       
+					      var row =  $(this).closest("tr");
+					      var tds = row.find('td');
+					      $.get('/dermalif/factura/removearticulo', {
+							  id: tds[5].innerText,
+						  }).done(function(data) {
+							  	eliminarCelda(data, row);
+							  						  
+						  });					      
+					        
+					    });
+	
+					  function crearcelda(data, articulo, factura){
+						  if(!data == ''){
+								  var newRow = $("<tr>");
+								  var cols = "";
+								  cols += '<td><span name="cant' + counter + '">'+ factura.cantidadf +'</span></td>';
+								  cols += '<td><span name="desc' + counter + '">'+ articulo[0].text +'</span></td>';				  
+								  cols += '<td><span name="valor' + counter + '">'+ factura.valorf +'</span></td>';		
+								  cols += '<td><span name="importe' + counter + '">'+ factura.importef +'</span></td>';
+								  cols += '<td><input type="button" class="ibtnDel btn btn-xs btn-danger "  value="Borrar"/></td>';
+								  cols += '<td style="display:none;"><span name="idfactdesc' + counter + '">'+ data +'</span></td></tr>';
+								  newRow.append(cols);					  
+								  $("table.table-striped").append(newRow);
+								  counter++;
+								  $("#fact-subtotal-var").val(factura.subtotalf);
+								  $("#fact-subtotal").text(factura.subtotalf);
+								  $("#fact-total-var").val(factura.totalf);
+								  $("#fact-total").text(factura.totalf);
+							  }else{
+								  $.notify("Error!!", "error");
+							  }
+					  }
+					  
+					  function eliminarCelda(data, row){	
+						  var tds = row.find('td');
+						  if(data == 'OK'){
+							  var factura = recalcular(tds[3].innerText);
+						      $("#fact-subtotal-var").val(factura.subtotalf);
+							  $("#fact-subtotal").text(factura.subtotalf);
+							  $("#fact-total-var").val(factura.totalf);
+							  $("#fact-total").text(factura.totalf)
+							  row.remove();       
+						      	counter -= 1;
+						  }
+					  }
+				
+				function facturar(cant, valor){
+					var importe = cant * valor;
+					var subtotal = $("#fact-subtotal-var").val();
+					var iva = $("#fact-iva").val();
+					var total = $("#fact-total-var").val();
+					total = parseFloat(importe) + parseFloat(total);
+					iva = (iva/100) * total;
+					subtotal = total - iva;
+					
+					var Factura = {cantidadf: cant,
+							valorf: valor,
+							importef: importe,
+							totalf: total,
+							subtotalf: subtotal};			
+					return Factura;					
+				}
+				
+				function recalcular(importe){
+					var subtotal = $("#fact-subtotal-var").val();
+					var iva = $("#fact-iva").val();
+					var total = $("#fact-total-var").val();
+					total = parseFloat(total) - parseFloat(importe);
+					iva = (iva/100) * total;
+					subtotal = total - iva;
+					
+					var Factura = {cantidadf: 0,
+							valorf: 0,
+							importef: importe,
+							totalf: total,
+							subtotalf: subtotal};			
+					return Factura;					
+				}	
 					
 					var countChecked = function() {
 						var n = false;
@@ -799,33 +981,7 @@
 			      
 			});
 			
-			var counter = 0;
-			  $("#addrow").on("click", function () {
-				  var newRow = $("<tr>");
-				  var cols = "";
-				  cols += '<td><span name="cant' + counter + '">'+ $("#fact-cant-product").val() +'</span></td>';
-				  cols += '<td><span name="desc' + counter + '">'+ $("#fact-producto").val() +'</span></td>';				  
-				  cols += '<td><span name="valor' + counter + '">'+ $("#fact-valor-product").val() +'</span></td>';
-				  
-				  cols += '<td><input type="button" class="ibtnDel btn btn-xs btn-danger "  value="Borrar"/></td></tr>';
-				  
-				  newRow.append(cols);
-				  $("table.table-striped").append(newRow);
-				  counter++;
-			  });
-			  
-			  $("table.table-striped").on("click", ".ibtnDel", function (event) {
-			        $(this).closest("tr").remove();       
-			        counter -= 1
-			    });
-			
-		  });
-		  
-		  //agregar productos a form para facturar
-		  function productoFact(){
-				$("#fact-producto").val($("#fact-modal-producto").val());
-				$("#fact-valor-product").val('35000');
-		  }; 
+			 
 
 		  
 		</script>

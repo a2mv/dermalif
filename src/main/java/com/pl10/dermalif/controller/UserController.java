@@ -39,6 +39,7 @@ import com.pl10.dermalif.constant.HrefConstant;
 import com.pl10.dermalif.constant.ViewConstant;
 import com.pl10.dermalif.enums.TypeIngresoStatus;
 import com.pl10.dermalif.model.CityAjaxResponse;
+import com.pl10.dermalif.model.FacturaModel;
 import com.pl10.dermalif.model.IngresoJsonObject;
 import com.pl10.dermalif.model.IngresoModel;
 import com.pl10.dermalif.model.LocationViewModel;
@@ -46,8 +47,9 @@ import com.pl10.dermalif.model.PersonJsonObject;
 import com.pl10.dermalif.model.PersonModel;
 import com.pl10.dermalif.model.UserRolePersonModel;
 import com.pl10.dermalif.service.CityService;
+import com.pl10.dermalif.service.FacturaService;
 import com.pl10.dermalif.service.IngresoService;
-import com.pl10.dermalif.service.PersonSevice;
+import com.pl10.dermalif.service.PersonService;
 import com.pl10.dermalif.service.StorageService;
 import com.pl10.dermalif.service.UserService;
 
@@ -60,7 +62,7 @@ public class UserController {
 	
 	@Autowired
 	@Qualifier("personService")
-	private PersonSevice personService;
+	private PersonService personService;
 	
 	@Autowired
 	@Qualifier("cityService")
@@ -80,6 +82,10 @@ public class UserController {
 	@Autowired
 	@Qualifier("storageService")
 	StorageService storageService;
+	
+	@Autowired
+	@Qualifier("facturaService")
+	FacturaService facturaService;
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping({"","/"})
@@ -252,9 +258,9 @@ public class UserController {
 				.body(file);
 	}
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_INGRESO')")
 	@GetMapping("ingresosview")
-	public String viewIngresosView(Model model){
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_INGRESO')")
+	public String viewIngresosView(@RequestParam(name="result", required=false) Integer result,Model model){
 		LOG.info("METHOD: viewIngresosView()");
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		PersonModel personsecurity = userService.userConverter(user);
@@ -264,12 +270,13 @@ public class UserController {
 		lvm.setDescripcion("Aqui puedes gestionar todos los ingresos");
 		model.addAttribute("lvm",lvm);
 		model.addAttribute("personsecurity",personsecurity);
+		model.addAttribute("result",result);
 		LOG.info("Returning to "+ViewConstant.VIEW_INGRESOLIST+" view");
 		return ViewConstant.VIEW_INGRESOLIST;
 	}
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_INGRESO')")
 	@GetMapping("ingresoform")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_INGRESO')")
 	public ModelAndView requestIngresoForm(@RequestParam(name="id", required=false) String id){
 		LOG.info("METHOD: requestIngresoForm() -- PARAMS: "+id);
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -301,10 +308,10 @@ public class UserController {
 		return model;
 	}
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_INGRESO')")
 	@PostMapping("/addingreso")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_INGRESO')")
 	public ModelAndView addIngreso(@Valid @ModelAttribute(name="ingreso") IngresoModel ingresoModel, BindingResult bindingResult){
-		LOG.info("METHOD: addPerson() -- PARAMS: " + ingresoModel);
+		LOG.info("METHOD: addIngreso() -- PARAMS: " + ingresoModel);
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		PersonModel personsecurity = userService.userConverter(user);
 		ModelAndView model = new ModelAndView();
@@ -334,17 +341,17 @@ public class UserController {
 			model.addObject("personsecurity",personsecurity);
 			LOG.info("Returning to "+ViewConstant.VIEW_FORMINGRESO+" view -- PARAMS: "+ingresoModel+" -- bindingResult"+bindingResult );
 			model.setViewName(ViewConstant.VIEW_FORMINGRESO);
-		}else{
-			LOG.info("Returning to user/index view");
-			model.setViewName("redirect:/user");
-			if(null != ingresoService.addIngresoModel(ingresoModel)){
-				model.addObject("result", 1);
+		}else{						
+			ingresoModel = ingresoService.addIngresoModel(ingresoModel);	
+			LOG.info("Returning to ingresos view");
+			if(null != ingresoModel){
+				model.setViewName("redirect:/user/ingresosview?result=1");
 			} else {
-				model.addObject("result", 0);
+				model.setViewName("redirect:/user/ingresosview?result=0");
 			}
 		}
 		return model;
-	}
+	}//user/anulaingreso
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_INGRESO')")
 	@PostMapping("changedate")
@@ -356,10 +363,39 @@ public class UserController {
 		DateFormat df = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
 		fechad = df.parse(fecha+" "+hora);
 		IngresoModel ingresoModel = ingresoService.findIngresoModelById(id);
+		if(ingresoModel.getTstatus()==TypeIngresoStatus.ANULADO) {
+			return "redirect:/user/ingresosview?result=4";
+		}
 		ingresoModel.setFecha(fechad);
 		ingresoService.addIngresoModel(ingresoModel);
-		return "redirect:/user/ingresosview";
+		return "redirect:/user/ingresosview?result=2";
+	}	
+	
+	@PostMapping("anulaingreso")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_INGRESO')")
+	public String anulaIngreso(@ModelAttribute(name="idIngreso") String id) throws ParseException{
+		LOG.info("METHOD: changeUpdate() -- PARAMS: idIngreso=" + id);
+		IngresoModel ingresoModel = ingresoService.findIngresoModelById(id);
+		if(ingresoModel.getTstatus()==TypeIngresoStatus.ANULADO) {
+			return "redirect:/user/ingresosview?result=4";
+		}
+		List<FacturaModel> facturaModels = facturaService.findFacturaModelByIngresoModel(ingresoModel);
+		boolean facturaActiva=false;
+		for(FacturaModel facturaModel:facturaModels) {
+			if(!facturaModel.getEstado().equals("ANULADO")) {
+				facturaActiva = true;
+				break;
+			}
+		}
+		if(facturaActiva==true) {
+			return "redirect:/user/ingresosview?result=3";
+		}
+		ingresoModel.setTstatus(TypeIngresoStatus.ANULADO);
+		ingresoService.addIngresoModel(ingresoModel);
+		return "redirect:/user/ingresosview?result=1";
 	}
+	
+	
 	
 	
 	@GetMapping("citas")

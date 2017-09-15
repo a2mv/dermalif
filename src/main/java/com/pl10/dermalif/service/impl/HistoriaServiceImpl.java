@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.pl10.dermalif.coverter.HistoriaConverter;
 import com.pl10.dermalif.coverter.IngresoConverter;
 import com.pl10.dermalif.coverter.PersonConverter;
+import com.pl10.dermalif.entity.Factura;
 import com.pl10.dermalif.entity.Historia;
 import com.pl10.dermalif.entity.Ingreso;
 import com.pl10.dermalif.entity.Person;
@@ -17,6 +18,7 @@ import com.pl10.dermalif.enums.TypeIngresoStatus;
 import com.pl10.dermalif.model.HistoriaModel;
 import com.pl10.dermalif.model.IngresoModel;
 import com.pl10.dermalif.model.PersonModel;
+import com.pl10.dermalif.repository.FacturaRepository;
 import com.pl10.dermalif.repository.HistoriaRepository;
 import com.pl10.dermalif.repository.IngresoRepository;
 import com.pl10.dermalif.repository.query.HistoriaDslRepository;
@@ -49,11 +51,26 @@ public class HistoriaServiceImpl implements HistoriaService {
 	@Qualifier("personConverter")
 	PersonConverter personConverter;
 	
+	@Autowired
+	@Qualifier("facturaRepository")
+	FacturaRepository facturaRepository; 
+	
 	@Override
 	public HistoriaModel addHistoriaModel(HistoriaModel historiaModel) {
 		Historia historia = historiaRepository.save(historiaConverter.historiaModelToHistoria(historiaModel));
-		//validar factura para ponerle estado a ingreso
-		historia.getIngreso().setTstatus(TypeIngresoStatus.PENDIENTE);
+		List<Factura> facturas = facturaRepository.findByIngreso(historia.getIngreso());
+		boolean ingresoActivo = false;
+		for(Factura factura: facturas) {
+			if(!factura.getEstado().equals("FINALIZADA")) {
+				ingresoActivo = true;
+				break;
+			}
+		}
+		if(ingresoActivo==true) {
+			historia.getIngreso().setTstatus(TypeIngresoStatus.FINALIZADO);
+		}else {
+			historia.getIngreso().setTstatus(TypeIngresoStatus.EN_CURSO);
+		}
 		historia.setIngreso(ingresoRepository.save(historia.getIngreso()));
 		return historiaConverter.historiaToHistoriaModel(historia);
 	}

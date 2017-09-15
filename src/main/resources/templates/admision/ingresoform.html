@@ -90,9 +90,10 @@
                   	<td><span th:text="${ingreso.empresa}"></span></td>
                   	<td><span></span></td>
                   	<td>
-                  		<span th:if="${ingreso.tstatus} == ${T(com.pl10.dermalif.enums.TypeIngresoStatus).PAGADO}" class="label label-success" th:text="${ingreso.tstatus}"></span>
-                  		<span th:if="${ingreso.tstatus} == ${T(com.pl10.dermalif.enums.TypeIngresoStatus).PENDIENTE}" class="label label-danger" th:text="${ingreso.tstatus}"></span>
-                  		<span th:if="${ingreso.tstatus} == ${T(com.pl10.dermalif.enums.TypeIngresoStatus).EN_CURSO}" class="label label-info" th:text="${ingreso.tstatus}"></span>
+                  		<span th:if="${ingreso.tstatus} == ${T(com.pl10.dermalif.enums.TypeIngresoStatus).INGRESADO}" class="label label-default" th:text="${ingreso.tstatus}"></span>
+                  		<span th:if="${ingreso.tstatus} == ${T(com.pl10.dermalif.enums.TypeIngresoStatus).EN_CURSO}" class="label label-primary" th:text="${ingreso.tstatus}"></span>
+                  		<span th:if="${ingreso.tstatus} == ${T(com.pl10.dermalif.enums.TypeIngresoStatus).FINALIZADO}" class="label label-success" th:text="${ingreso.tstatus}"></span>
+                  		<span th:if="${ingreso.tstatus} == ${T(com.pl10.dermalif.enums.TypeIngresoStatus).FACTURADO}" class="label label-info" th:text="${ingreso.tstatus}"></span>
                   		<span th:if="${ingreso.tstatus} == ${T(com.pl10.dermalif.enums.TypeIngresoStatus).ANULADO}" class="label label-warning" th:text="${ingreso.tstatus}"></span>
                   	</td>
                   </tr>

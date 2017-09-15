@@ -2,9 +2,10 @@ package com.pl10.dermalif.enums;
 
 public enum TypeIngresoStatus {
 
-	PAGADO,
-	PENDIENTE,
+	INGRESADO,
 	EN_CURSO,
+	FINALIZADO,
+	FACTURADO,
 	ANULADO;
 	
 }

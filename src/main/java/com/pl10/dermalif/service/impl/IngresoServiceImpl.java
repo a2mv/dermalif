@@ -11,6 +11,7 @@ import com.pl10.dermalif.coverter.IngresoConverter;
 import com.pl10.dermalif.coverter.PersonConverter;
 import com.pl10.dermalif.entity.Ingreso;
 import com.pl10.dermalif.entity.Person;
+import com.pl10.dermalif.enums.TypeIngresoStatus;
 import com.pl10.dermalif.model.IngresoModel;
 import com.pl10.dermalif.model.PersonModel;
 import com.pl10.dermalif.repository.IngresoRepository;
@@ -39,6 +40,9 @@ public class IngresoServiceImpl implements IngresoService {
 
 	@Override
 	public IngresoModel addIngresoModel(IngresoModel ingresoModel) {
+		if(ingresoModel.getId()==null) {
+			ingresoModel.setTstatus(TypeIngresoStatus.INGRESADO);
+		}
 		Ingreso ingreso = ingresoRepository.save(ingresoConverter.ingresoModelToIngreso(ingresoModel));
 		return ingresoConverter.ingresoToIngresoModel(ingreso);
 	}

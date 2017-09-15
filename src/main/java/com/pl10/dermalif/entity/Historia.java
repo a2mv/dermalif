@@ -23,27 +23,27 @@ public class Historia {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ingreso", nullable = false)
 	private Ingreso ingreso;
-	@Column(name = "mconsulta", nullable = false, length = 2500)
+	@Column(name = "mconsulta", nullable = false, columnDefinition="TEXT")
 	private String mconsulta;
-	@Column(name = "etopografia", length = 2500)
+	@Column(name = "etopografia", columnDefinition="TEXT")
 	private String etopografia;
-	@Column(name = "emorfologia", length = 2500)
+	@Column(name = "emorfologia", columnDefinition="TEXT")
 	private String emorfologia;
-	@Column(name = "eresto", length = 2500)
+	@Column(name = "eresto", columnDefinition="TEXT")
 	private String eresto;
-	@Column(name = "interrogatorio", nullable = false, length = 2500)
+	@Column(name = "interrogatorio", nullable = false, columnDefinition="TEXT")
 	private String interrogatorio;
-	@Column(name = "afamiliares", length = 2500)
+	@Column(name = "afamiliares", columnDefinition="TEXT")
 	private String afamiliares;
-	@Column(name = "apersonales", length = 2500)
+	@Column(name = "apersonales", columnDefinition="TEXT")
 	private String apersonales;
-	@Column(name = "efgeneral", nullable = false, length = 2500)
+	@Column(name = "efgeneral", nullable = false, columnDefinition="TEXT")
 	private String efgeneral;
-	@Column(name = "escomplementario", length = 2500)
+	@Column(name = "escomplementario", columnDefinition="TEXT")
 	private String escomplementario;
-	@Column(name = "diagnostico", nullable = false, length = 2500)
+	@Column(name = "diagnostico", nullable = false, columnDefinition="TEXT")
 	private String diagnostico;
-	@Column(name = "tratamiento", length = 2500)
+	@Column(name = "tratamiento", columnDefinition="TEXT")
 	private String tratamiento;
 
 	public Historia() {

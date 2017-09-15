@@ -37,5 +37,15 @@ public class ArticuloDslRepository {
 						).fetchCount();				
 		return count;
 	}
+	
+	public List<Articulo> searchArticuloByNameOrByCodigo(String str){
+		JPAQuery<Articulo> query = new JPAQuery<Articulo>(em);
+		List<Articulo> articulos = query.select(qArticulo).from(qArticulo)
+				.where(qArticulo.name.contains(str)
+				.or(qArticulo.codigo.contains(str)
+				.and(qArticulo.enable.eq(true))))				
+				.limit(7).fetch();
+		return articulos;
+	}
 
 }

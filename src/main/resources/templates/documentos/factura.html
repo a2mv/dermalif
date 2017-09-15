@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org "
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:data="https://github.com/mxab/thymeleaf-extras-data-attribute">
+<head>
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <title>Dermalif | Factura</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport"/>
+  <!-- Bootstrap 3.3.6 -->
+  <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}"/>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css"/>
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css"/>
+  <!-- Theme style -->
+  <link rel="stylesheet" th:href="@{/dist/css/AdminLTE.min.css}"/>
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body onload="window.print();">
+<div >
+  <!-- Main content -->
+  <section class="invoice">
+    <!-- title row -->
+    <div class="row">
+      <div class="col-xs-12">
+        <h2 class="page-header">
+          <i class="fa fa-stethoscope"></i> Linda Forero, Dermatologa.
+          <small class="pull-right">Fecha: <span th:text="${#dates.format(factura.fecha, 'yyyy-MM-dd hh:mm a')}"></span></small>
+        </h2>
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- info row -->
+    <div class="row invoice-info">
+      <div class="col-sm-4 invoice-col">
+        <strong>Datos Personales</strong>
+        <address>
+          <strong>Documento: </strong>
+          	<span th:text="${factura.ingresomodel.personModel.tdocumento}+' '+${factura.ingresomodel.personModel.ndocumento}"></span><br/>
+          <strong>Nombres: </strong> 
+          	<span th:text="${factura.ingresomodel.personModel.firstname}+' '+${factura.ingresomodel.personModel.firstname2}"></span><br/>
+          <strong>Apellidos: </strong> 
+          	<span th:text="${factura.ingresomodel.personModel.lastname}+' '+${factura.ingresomodel.personModel.lastname2}"></span><br/>
+          <strong>Fecha Nac.: </strong> 
+          	<span th:text="${factura.ingresomodel.personModel.birthdate}"></span><br/>
+         <strong>Sexo: </strong>
+         	<span th:text="${factura.ingresomodel.personModel.tsexo}"></span><br/>
+        </address>
+      </div>
+      <!-- /.col -->
+      <div class="col-sm-4 invoice-col">
+        <br/>
+        <address>
+          <strong>Estado Civil: </strong>
+          	<span th:text="${factura.ingresomodel.personModel.tcivilstatus}"></span><br/>
+          <strong>Ciudad Nac.: </strong> 
+          	<span th:text="${factura.ingresomodel.personModel.cnacimiento.countryModel.name}+', '+${factura.ingresomodel.personModel.cnacimiento.name}"></span><br/>
+          <strong>Ciudad Rec.: </strong> 
+          	<span th:text="${factura.ingresomodel.personModel.cresidencia.countryModel.name}+', '+${factura.ingresomodel.personModel.cresidencia.name}"></span><br/>
+          <strong>Telefono: </strong> 
+          	<span th:text="${factura.ingresomodel.personModel.telefono}"></span><br/>
+         <strong>Dirección: </strong>
+         	<span th:text="${factura.ingresomodel.personModel.direccion}"></span><br/>
+        </address>
+      </div>
+      <!-- /.col -->
+      <div class="col-sm-4 invoice-col">
+        <b>FACTURA #<span th:text="${factura.idfactura}"></span></b><br/>
+        <br/>
+        <b>Ingreso ID:</b> NO<span th:text="${factura.ingresomodel.norden}"></span><br/>
+        <b>Empresa: </b> <span th:text="${factura.ingresomodel.empresa}"></span>
+      </div>
+      <!-- /.col -->
+    </div>
+   <!-- Table row -->
+    <div class="row">
+      <div class="col-xs-12 table-responsive">
+        <table class="table table-striped">
+          <thead>
+          <tr>            
+            <th>Código</th>
+            <th>Articulo</th>     
+            <th>Cantidad</th>       
+            <th>Precio</th>
+            <th>Importe</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="desc : ${facturadesc}">
+            <td th:text="${desc.codarticulo}"></td>
+            <td th:text="${desc.namearticulo}"></td>
+            <td th:text="${desc.cantidad}"></td>
+            <td>$<span th:text="${desc.varticulo}"></span></td>
+            <td>$<span th:text="${desc.vtotal}"></span></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+
+
+    <div class="row">
+    <div class="col-xs-6">
+        <p class="lead">Metodos de pago:</p>
+        <img th:src="@{/dist/img/credit/visa.png}" alt="Visa"/>
+        <img th:src="@{/dist/img/credit/mastercard.png}" alt="Mastercard"/>
+        <img th:src="@{/dist/img/credit/american-express.png}" alt="American Express"/>
+        <img th:src="@{/dist/img/credit/paypal2.png}" alt="Paypal"/>
+
+        <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+          Esta factura tiene una fecha de vencimiento de 30 dias posteriores a su fecha de creación.
+        </p>
+      </div>
+      <!-- /.col -->
+    <div class="col-xs-6">
+        <p class="lead">FECHA DE FACTURA: <span th:text="${#dates.format(factura.fecha, 'yyyy-MM-dd')}"></span></p>
+
+        <div class="table-responsive">
+          <table class="table">
+            <tr>
+              <th style="width:50%">Subtotal:</th>
+              <td>$<span th:text="${factura.subtotal}"></span></td>
+            </tr>
+            <tr>
+              <th>IVA (<span th:text="${factura.iva}"></span>%)</th>
+              <td>$<span th:text="${factura.valoriva}"></span></td>
+            </tr>
+            <tr>
+              <th>Total:</th>
+              <td><strong>$<span th:text="${factura.valortotal}"></span></strong></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <!-- /.col -->
+      <!-- accepted payments column -->
+      <div class="col-xs-6">
+		<br/>
+			<img class="" th:src="@{/dist/img/firmablank.png}" width="125" height="102"/>
+			<hr/>
+			<span>Usuario</span><br/>
+			<strong><span th:text="${factura.ingresomodel.personModel.firstname}+' '+${factura.ingresomodel.personModel.lastname}"></span></strong><br/>
+			<strong><small th:text="${factura.ingresomodel.personModel.tdocumento}+' '+${factura.ingresomodel.personModel.ndocumento}"></small></strong>
+      </div>
+      <!-- /.col -->
+
+      <div class="col-xs-6">
+		<div class="pull-right">
+			<br/>
+			<img class="" th:src="@{/dist/img/firmablank.png}" width="125" height="102"/>
+			<hr/>
+			<span>Facturador</span><br/>
+			<strong><span th:text="${person.firstname}+' '+${person.lastname}"></span></strong><br/>
+			<strong><small th:text="${person.tdocumento}+' '+${person.ndocumento}"></small></strong>
+		</div>
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- ./wrapper -->
+<footer>
+<br/>
+<br/>
+<hr/>
+	<div>
+  		<small>Pl10 &copy; 2017 | contacto@pl10.com.co | Todos los derechos reservados.</small>
+  	</div>
+</footer>
+</body>
+</html>

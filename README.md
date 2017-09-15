@@ -24,3 +24,5 @@ Software para gestión de consultorio de dermatologia.
   - Documento imprimible de tratamiento (Receta médica)
 - Facturación
   - Gestión de articulos para facturación
+  - Generación de facturas desde ingresos.
+  - Documento imprimible de factura.

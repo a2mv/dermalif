@@ -30,6 +30,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.pl10.dermalif.constant.HrefConstant;
 import com.pl10.dermalif.constant.ViewConstant;
+import com.pl10.dermalif.enums.TypeIngresoStatus;
 import com.pl10.dermalif.model.HistoriaModel;
 import com.pl10.dermalif.model.IngresoModel;
 import com.pl10.dermalif.model.LocationViewModel;
@@ -37,7 +38,7 @@ import com.pl10.dermalif.model.PersonJsonObject;
 import com.pl10.dermalif.model.PersonModel;
 import com.pl10.dermalif.service.HistoriaService;
 import com.pl10.dermalif.service.IngresoService;
-import com.pl10.dermalif.service.PersonSevice;
+import com.pl10.dermalif.service.PersonService;
 import com.pl10.dermalif.service.UserService;
 
 @Controller
@@ -61,16 +62,18 @@ public class HistoriaController {
 	
 	@Autowired
 	@Qualifier("personService")
-	private PersonSevice personService;
+	private PersonService personService;
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_HISTORIA')")
 	@GetMapping("hcform")
 	public ModelAndView requestHCForm(@RequestParam(name="id", required=false) String id){
 		LOG.info("METHOD: requestHCForm() -- PARAMS: "+id);
 		ModelAndView model = new ModelAndView(ViewConstant.VIEW_FORMHC);
-		IngresoModel ingresoModel = ingresoService.findIngresoModelById(id);		
+		IngresoModel ingresoModel = ingresoService.findIngresoModelById(id);	
+		if(ingresoModel.getTstatus()==TypeIngresoStatus.ANULADO) {
+			return new ModelAndView("redirect:/user/ingresosview?result=4");
+		}
 		List<HistoriaModel> historiaModels = historiaService.findAllHistoriaModelByIngreso(ingresoModel);
-		System.out.println(":v"+historiaModels);
 		model.addObject("ingreso",ingresoModel);
 		model.addObject("person",ingresoModel.getPersonModel());
 		LocationViewModel lvm = new LocationViewModel();
@@ -107,6 +110,7 @@ public class HistoriaController {
 	public ModelAndView addHistoria(@Valid @ModelAttribute(name = "historia") HistoriaModel historiaModel,
 			BindingResult bindingResult) {
 		LOG.info("METHOD: addHistoria() -- PARAMS: " + historiaModel);
+		
 		ModelAndView model = new ModelAndView(ViewConstant.VIEW_FORMHC);
 		LocationViewModel lvm = new LocationViewModel();
 		lvm.setModulo("HISTORIA");
@@ -177,9 +181,9 @@ public class HistoriaController {
 		LOG.info("Returning to "+ViewConstant.VIEW_USERHISTORY+" view");		
 		return model;
 	}
-	
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_HISTORIA')")
+		
 	@RequestMapping(value = {"/alluser"}, method = RequestMethod.GET, produces = "application/json")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_HISTORIA')")
 	public @ResponseBody PersonJsonObject alluserDataTables(HttpServletRequest request){
 		Integer pageNumber = 0;
 		if (null != request.getParameter("iDisplayStart")){
@@ -194,9 +198,9 @@ public class HistoriaController {
 		personJsonObject.setAaData(personModelList);
 		return personJsonObject;
 	}
-	
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_HISTORIA')")
+		
 	@GetMapping("historybyuser")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_HISTORIA')")
 	public ModelAndView requestViewHistory(@RequestParam(name="id", required=false) String id){
 		LOG.info("METHOD: requestViewHistory() -- PARAMS: "+id);
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

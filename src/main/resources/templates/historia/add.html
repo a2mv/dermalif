@@ -146,9 +146,9 @@
 		     			<textarea class="form-control" rows="5" th:placeholder="${ejemplotratamiento}" th:field="*{tratamiento}" th:value="${tratamiento}"></textarea>
 		     		</div> 
 		     		<div class="row">
-			     		<div class="col-xs-12">			       			
-		   					<a th:if="${historia.id}!=null" th:href="@{'/historia/reporthistoria?id='+${historia.id}}" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Historia</a>
-			     			<a th:if="${historia.id}!=null" th:href="@{'/historia/reporttratamiento?id='+${historia.id}}" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Tratamiento</a>
+			     		<div class="col-xs-12">     			
+		   					<a th:if="${historia.id !=null and historia.id != ''}" th:href="@{'/historia/reporthistoria?id='+${historia.id}}" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Historia</a>
+			     			<a th:if="${historia.id !=null and historia.id != ''}" th:href="@{'/historia/reporttratamiento?id='+${historia.id}}" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Tratamiento</a>
 			     			<button type="submit" class="btn btn-primary pull-right" >Guardar</button>
 			     		</div>
 		     		</div>

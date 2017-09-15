@@ -5,7 +5,7 @@ import java.util.List;
 import com.pl10.dermalif.entity.Person;
 import com.pl10.dermalif.model.PersonModel;
 
-public interface PersonSevice {
+public interface PersonService {
 	
 	public abstract PersonModel addPersonModel(PersonModel personModel);
 	
@@ -20,5 +20,9 @@ public interface PersonSevice {
 	public abstract Long countSearchListPersonModel(String str);
 	
 	public abstract PersonModel repairCityModel(PersonModel personModel);
+	
+	public abstract PersonModel findPersonModelByEmail(String email);
+	
+	public abstract Person findPersonByEmail(String email);
 
 }

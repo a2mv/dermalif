@@ -37,6 +37,10 @@
                 </tr>               
                 </tbody>-->
               </table>
+              <div th:if="${result == 1}" class="alert alert-success" role="alert">¡Acción exitosa!</div>
+              <div th:if="${result == 0}" class="alert alert-danger" role="alert">Error Adding ingreso!</div>
+              <div th:if="${result == 3}" class="alert alert-warning" role="alert">¡Facturas activas en ingreso!</div>
+              <div th:if="${result == 4}" class="alert alert-warning" role="alert">¡Sin acciones para ingreso anulado!</div>
             </div>
             <!-- /.box-body -->
             
@@ -77,6 +81,64 @@
 	              					</div>
 	              				</div>
 	              			</div>              			
+			      		</div>
+			      		<div class="modal-footer">
+			        		<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+			        		<button type="submit" class="btn btn-primary" >Aceptar</button>
+			      		</div>
+		      		</form>
+	    		</div>
+	  		</div>
+		</div>
+		<!-- Modal -->
+		
+		<!-- Modal Factura-->
+		<div id="myModalFactura" class="modal fade" role="dialog">
+	  		<div class="modal-dialog">
+	    	<!-- Modal content-->
+	    		<div class="modal-content">
+	    			<form class="" action="#" th:action="@{/factura/createfactura}" method="post">
+			      		<div class="modal-header">
+			        		<button type="button" class="close" data-dismiss="modal">&times;</button>
+			        		<h4 class="modal-title">Generar factura</h4>
+			      		</div>
+			   			<div class="modal-body">		   	
+			   			<input type="hidden" name="idIngreso" id="idIngreso" value=""/>	
+			   			Esta acción generará una nueva factura con el siguiente consecutivo en el sistema.		
+			   			<BR/>
+			   			<div class="form-group">
+	            			<div class="form-group">
+	            			<label class="control-label">Consecutivo: </label>
+	            			<input class="form-control" type="text" name="idFact" id="idFact" placeholder="FA"/>
+	            			</div>
+	            			
+	            			<!-- debe generar un numero consecutivo -->
+	            		</div>			
+	                 	<small>Por favor solo ingrese valores numericos</small>		
+			      		</div>
+			      		<div class="modal-footer">
+			        		<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+			        		<button type="submit" class="btn btn-primary" >Aceptar</button>
+			      		</div>
+		      		</form>
+	    		</div>
+	  		</div>
+		</div>
+		<!-- Modal -->
+		
+		<!-- Modal Anula-->
+		<div id="myModalanula" class="modal fade" role="dialog">
+	  		<div class="modal-dialog">
+	    	<!-- Modal content-->
+	    		<div class="modal-content">
+	    			<form class="" action="#" th:action="@{/user/anulaingreso}" method="post">
+			      		<div class="modal-header">
+			        		<button type="button" class="close" data-dismiss="modal">&times;</button>
+			        		<h4 class="modal-title">Anular ingreso</h4>
+			      		</div>
+			   			<div class="modal-body">		   	
+			   			<input type="hidden" name="idIngreso" id="idIngreso" value=""/>	
+			   			Esta acción anulara este ingreso en el sistema.			
 			      		</div>
 			      		<div class="modal-footer">
 			        		<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>

@@ -13,10 +13,10 @@ import com.pl10.dermalif.model.PersonModel;
 import com.pl10.dermalif.repository.PersonRepository;
 import com.pl10.dermalif.repository.query.PersonDslRepository;
 import com.pl10.dermalif.service.CityService;
-import com.pl10.dermalif.service.PersonSevice;
+import com.pl10.dermalif.service.PersonService;
 
 @Service("personService")
-public class PersonServiceImpl implements PersonSevice {
+public class PersonServiceImpl implements PersonService {
 
 	@Autowired
 	@Qualifier("personRepository")
@@ -88,6 +88,16 @@ public class PersonServiceImpl implements PersonSevice {
 			personModel.setCresidencia(cityService.findCityModelById(personModel.getCresidencia().getId()));
 		}
 		return personModel;
+	}
+
+	@Override
+	public PersonModel findPersonModelByEmail(String email) {
+		return personConverter.personToPersonModel(findPersonByEmail(email));
+	}
+
+	@Override
+	public Person findPersonByEmail(String email) {
+		return personRepository.findByEmail(email);
 	}
 	
 	

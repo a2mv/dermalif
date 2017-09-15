@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.pl10.dermalif.coverter.ArticuloConverter;
 import com.pl10.dermalif.entity.Articulo;
+import com.pl10.dermalif.model.ArticuloAjaxResponse;
 import com.pl10.dermalif.model.ArticuloModel;
 import com.pl10.dermalif.repository.ArticuloRepository;
 import com.pl10.dermalif.repository.query.ArticuloDslRepository;
@@ -60,4 +61,13 @@ public class ArticuloServiceImpl implements ArticuloService {
 		return articuloDslRepository.countSearchAllDataArticulo(str);
 	}
 
+	@Override
+	public List<ArticuloAjaxResponse> listArticuloAjaxResponse(String str) {
+		List<Articulo> articulos = articuloDslRepository.searchArticuloByNameOrByCodigo(str);
+		List<ArticuloAjaxResponse> articuloAjaxs = new ArrayList<ArticuloAjaxResponse>();
+		for(Articulo articulo: articulos) {
+			articuloAjaxs.add(new ArticuloAjaxResponse(articulo.getId(), articulo.getCodigo()+" "+articulo.getName()));
+		}
+		return articuloAjaxs;
+	}
 }
