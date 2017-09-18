@@ -164,9 +164,9 @@
               </div>
               
              <div class="row no-print">
-        		<div th:if="${factura.estado == 'NUEVO'}" class="col-xs-12">
-        			<a th:href="@{'/factura/reportfactura?id='+${factura.id}}" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Imprimir</a>		
-        			<a th:href="@{'/factura/cerrarfactura?factura='+${factura.id}}" class="btn btn-primary pull-right"><i class="fa fa-lock"></i> Cerrar Factura</a>	
+        		<div class="col-xs-12">
+        			<a th:if="${factura.estado == 'FINALIZADO'}" th:href="@{'/factura/reportfactura?id='+${factura.id}}" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Imprimir</a>		
+        			<a th:if="${factura.estado == 'NUEVO'}" th:href="@{'/factura/cerrarfactura?factura='+${factura.id}}" class="btn btn-primary pull-right"><i class="fa fa-lock"></i> Cerrar Factura</a>	
         		</div>
       		</div>
               
