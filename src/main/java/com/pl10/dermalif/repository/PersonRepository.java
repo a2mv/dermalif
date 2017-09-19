@@ -16,5 +16,7 @@ public interface PersonRepository extends JpaRepository<Person, Serializable> {
 	
 	public abstract List<Person> findByTdocumentoAndNdocumento(TypeDocument document, String ndocumento);
 	
+	public abstract List<Person> findByNdocumentoLikeIgnoreCase(String ndocumento);
+	
 	public abstract Person findByEmail(String email);
 }

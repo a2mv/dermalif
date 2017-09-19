@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.pl10.dermalif.coverter.PersonConverter;
 import com.pl10.dermalif.entity.Person;
+import com.pl10.dermalif.model.PersonAjaxResponse;
 import com.pl10.dermalif.model.PersonModel;
 import com.pl10.dermalif.repository.PersonRepository;
 import com.pl10.dermalif.repository.query.PersonDslRepository;
@@ -98,6 +99,16 @@ public class PersonServiceImpl implements PersonService {
 	@Override
 	public Person findPersonByEmail(String email) {
 		return personRepository.findByEmail(email);
+	}
+
+	@Override
+	public List<PersonAjaxResponse> listCityAjaxResponse(String str) {
+		List<Person> persons = personRepository.findByNdocumentoLikeIgnoreCase("%"+str+"%");
+		List<PersonAjaxResponse> personAjaxs = new ArrayList<PersonAjaxResponse>();
+		for(Person person : persons){
+			personAjaxs.add(new PersonAjaxResponse(person.getId(), person.getTdocumento()+" "+person.getNdocumento()));
+		}
+		return personAjaxs;
 	}
 	
 	

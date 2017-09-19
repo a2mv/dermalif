@@ -1,22 +1,22 @@
 package com.pl10.dermalif.model;
 
-public class CityAjaxResponse {
+public class PersonAjaxResponse {
 	
-	int id;
+	String id;
 	
 	String text;
 
-	public CityAjaxResponse(int id, String text) {
+	public PersonAjaxResponse(String id, String text) {
 		super();
 		this.id = id;
 		this.text = text;
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

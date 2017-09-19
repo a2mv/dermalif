@@ -3,7 +3,7 @@ package com.pl10.dermalif.service;
 import java.util.List;
 
 import com.pl10.dermalif.entity.Articulo;
-import com.pl10.dermalif.model.ArticuloAjaxResponse;
+import com.pl10.dermalif.model.ModelAjaxResponse;
 import com.pl10.dermalif.model.ArticuloModel;
 
 public interface ArticuloService {
@@ -18,5 +18,5 @@ public interface ArticuloService {
 	
 	public abstract Long countSearchArticuloModel(String str);
 	
-	public abstract List<ArticuloAjaxResponse> listArticuloAjaxResponse(String str);
+	public abstract List<ModelAjaxResponse> listArticuloAjaxResponse(String str);
 }

@@ -1,12 +1,12 @@
 package com.pl10.dermalif.model;
 
-public class ArticuloAjaxResponse {
+public class ModelAjaxResponse {
 	
 	int id;
 	
 	String text;
 
-	public ArticuloAjaxResponse(int id, String text) {
+	public ModelAjaxResponse(int id, String text) {
 		super();
 		this.id = id;
 		this.text = text;

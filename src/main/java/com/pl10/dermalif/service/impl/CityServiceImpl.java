@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.pl10.dermalif.coverter.CityConverter;
 import com.pl10.dermalif.entity.City;
-import com.pl10.dermalif.model.CityAjaxResponse;
+import com.pl10.dermalif.model.ModelAjaxResponse;
 import com.pl10.dermalif.model.CityModel;
 import com.pl10.dermalif.repository.CityRepository;
 import com.pl10.dermalif.repository.query.CityDslRepository;
@@ -31,11 +31,11 @@ public class CityServiceImpl implements CityService {
 	private CityConverter cityConverter;
 	
 	@Override
-	public List<CityAjaxResponse> listCityAjaxResponse(String str) {
+	public List<ModelAjaxResponse> listCityAjaxResponse(String str) {
 		List<City> cities = cityDslRepository.searchCityByNameOrByCountry(str);
-		List<CityAjaxResponse> cityAjaxs = new ArrayList<CityAjaxResponse>();
+		List<ModelAjaxResponse> cityAjaxs = new ArrayList<ModelAjaxResponse>();
 		for(City city : cities){
-			cityAjaxs.add(new CityAjaxResponse(city.getId(), city.getCountry().getName()+" | "+city.getName()));
+			cityAjaxs.add(new ModelAjaxResponse(city.getId(), city.getCountry().getName()+" | "+city.getName()));
 		}
 		return cityAjaxs;
 	}

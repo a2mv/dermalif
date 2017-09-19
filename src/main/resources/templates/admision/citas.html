@@ -17,14 +17,27 @@
               			<h4 class="box-title">Crear nueva cita</h4>
             		</div>
             		<div class="box-body">
+	            		<div class="btn-group" style="width: 100%; margin-bottom: 10px;">
+			                <!--<button type="button" id="color-chooser-btn" class="btn btn-info btn-block dropdown-toggle" data-toggle="dropdown">Color <span class="caret"></span></button>-->
+			                <ul class="fc-color-picker" id="color-chooser">
+			                  <li><a class="text-aqua" href="#"><i class="fa fa-square"></i></a></li>
+			                  <li><a class="text-blue" href="#"><i class="fa fa-square"></i></a></li>
+			                  <li><a class="text-light-blue" href="#"><i class="fa fa-square"></i></a></li>
+			                  <li><a class="text-teal" href="#"><i class="fa fa-square"></i></a></li>
+			                  <li><a class="text-yellow" href="#"><i class="fa fa-square"></i></a></li>
+			                  <li><a class="text-orange" href="#"><i class="fa fa-square"></i></a></li>
+			                  <li><a class="text-green" href="#"><i class="fa fa-square"></i></a></li>
+			                  <li><a class="text-lime" href="#"><i class="fa fa-square"></i></a></li>
+			                  <li><a class="text-red" href="#"><i class="fa fa-square"></i></a></li>
+			                  <li><a class="text-purple" href="#"><i class="fa fa-square"></i></a></li>
+			                  <li><a class="text-fuchsia" href="#"><i class="fa fa-square"></i></a></li>
+			                  <li><a class="text-muted" href="#"><i class="fa fa-square"></i></a></li>
+			                  <li><a class="text-navy" href="#"><i class="fa fa-square"></i></a></li>
+			                </ul>
+			              </div>  
+			              <!-- /btn-group -->
             			<div class="form-group"><label class="control-label">Documento paciente:</label>			                
-			                <select class="form-control select2" style="width: 100%;">
-			                  <option></option>
-			                  <option>CC 10256984</option>
-			                  <option>CE 8963</option>
-			                  <option>CC 5668963</option>
-			                  <option>MS 1024222</option>
-			                  <option>TI 9685441225</option>
+			                <select th:id="personcita" class="form-control" style="width: 100%;">
 			                </select>
 		              	</div>
 		              	<div class="form-group"><label class="control-label">Fecha de cita:</label>
@@ -32,30 +45,30 @@
 			        			<div class="input-group-addon">
 			        				<i class="fa fa-calendar"></i>
 		        				</div>
-	       						<input type="text" class="form-control pull-right" id="datepicker" placeholder="25/07/2001"/>
+	       						<input type="text" class="form-control pull-right" id="fechastart"/>
 	               			</div>	               			
               			</div>
               			<div class="bootstrap-timepicker">
               				<div class="form-group"><label class="control-label">Hora de cita:</label>
               					<div class="input-group">
-	              					<input type="text" class="form-control timepicker"/>
+	              					<input type="text" class="form-control" id="horastart"/>
 	              					<div class="input-group-addon">
 	                      				<i class="fa fa-clock-o"></i>
 	                    			</div>
               					</div>
               				</div>
               			</div>
-              			<div class="form-group"><label class="control-label">Duracíon de consulta:</label>
-		                  	<select class="form-control">
-		                    	<option>5 min.</option>
-		                    	<option>10 min.</option>
-		                    	<option>15 min.</option>
-		                    	<option>30 min.</option>
+              			<div class="form-group"><label class="control-label">Duración de consulta:</label>
+		                  	<select class="form-control" id="durationcita">
+		                    	<option value="10">10 min.</option>
+		                    	<option value="15">15 min.</option>
+		                    	<option value="20">20 min.</option>
+		                    	<option value="30">30 min.</option>
 		                  	</select>
 	        			</div>
 	        			<div class="form-group">
                  			<div class="">
-                   				<button type="submit" class="btn btn-primary">Generar</button>
+                   				<button type="button" id="add-new-event" class="btn btn-primary btn-flat">Generar</button>
                  			</div>
                			</div>
             		</div>
@@ -73,7 +86,35 @@
         	</div>	
 		</div>
 		
+		<!-- MODAL -->
+		<div class="modal fade"  id="myAlert2" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Detalle de la información</h4>
+                </div>
+                <div class="form-group col-md-12">
+                    <h5 class="box-title"><b>Paciente:</b><label id="lbPaciente"></label>
+                    </h5>
+                </div>
+                <div class="form-group col-md-12">
+                    <h5 class="box-title"><b>Cita:</b><label id="lbCita"></label>
+                    </h5>
+                </div>
+                                <div class="modal-body">
 
+                            <input type="hidden" id="hdnIdCita" name="hdnIdCita" />
+                            <button type="button" id="btnVerP" class="btn btn-default">Crear Ingreso</button>
+                            <button type="button" class="btn btn-danger" onclick="eliminar()" data-dismiss="modal" >Eliminar Cita</button>
+                </div>
+                <div class="modal-footer">
+                   
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 		

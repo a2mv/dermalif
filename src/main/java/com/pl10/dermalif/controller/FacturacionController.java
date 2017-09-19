@@ -33,7 +33,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.pl10.dermalif.constant.HrefConstant;
 import com.pl10.dermalif.constant.ViewConstant;
 import com.pl10.dermalif.enums.TypeIngresoStatus;
-import com.pl10.dermalif.model.ArticuloAjaxResponse;
 import com.pl10.dermalif.model.ArticuloJsonObject;
 import com.pl10.dermalif.model.ArticuloModel;
 import com.pl10.dermalif.model.FacturaJsonObject;
@@ -41,6 +40,7 @@ import com.pl10.dermalif.model.FacturaModel;
 import com.pl10.dermalif.model.FacturadescModel;
 import com.pl10.dermalif.model.IngresoModel;
 import com.pl10.dermalif.model.LocationViewModel;
+import com.pl10.dermalif.model.ModelAjaxResponse;
 import com.pl10.dermalif.model.PersonModel;
 import com.pl10.dermalif.service.ArticuloService;
 import com.pl10.dermalif.service.FacturaService;
@@ -260,9 +260,9 @@ public class FacturacionController {
 	
 	@GetMapping("/search/articulo")
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_FACTURA')")
-	public @ResponseBody List<ArticuloAjaxResponse> searchArticulos(@RequestParam String searchString){
+	public @ResponseBody List<ModelAjaxResponse> searchArticulos(@RequestParam String searchString){
 		LOG.info("Requesting search articulos with term: {} " + searchString);
-		List<ArticuloAjaxResponse> list = articuloService.listArticuloAjaxResponse(searchString);
+		List<ModelAjaxResponse> list = articuloService.listArticuloAjaxResponse(searchString);
 		return list;
 	}
 	

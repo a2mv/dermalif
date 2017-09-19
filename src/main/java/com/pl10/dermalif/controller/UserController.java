@@ -38,7 +38,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.pl10.dermalif.constant.HrefConstant;
 import com.pl10.dermalif.constant.ViewConstant;
 import com.pl10.dermalif.enums.TypeIngresoStatus;
-import com.pl10.dermalif.model.CityAjaxResponse;
+import com.pl10.dermalif.model.ModelAjaxResponse;
 import com.pl10.dermalif.model.FacturaModel;
 import com.pl10.dermalif.model.IngresoJsonObject;
 import com.pl10.dermalif.model.IngresoModel;
@@ -192,9 +192,9 @@ public class UserController {
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@RequestMapping(value = {"/search/city"}, method = RequestMethod.GET)
-	public @ResponseBody List<CityAjaxResponse> searchUsers(@RequestParam String searchString) {
+	public @ResponseBody List<ModelAjaxResponse> searchUsers(@RequestParam String searchString) {
 		LOG.info("Requesting search users with term: {} " + searchString);
-		List<CityAjaxResponse> list = cityService.listCityAjaxResponse(searchString);
+		List<ModelAjaxResponse> list = cityService.listCityAjaxResponse(searchString);
 		return list;
 	}
 	
@@ -395,23 +395,10 @@ public class UserController {
 		return "redirect:/user/ingresosview?result=1";
 	}
 	
-	
-	
-	
 	@GetMapping("citas")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CITAS')")
 	public ModelAndView requestCitasView(){
-		LOG.info("METHOD: requestCitasView()");
-		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		PersonModel personsecurity = userService.userConverter(user);
-		ModelAndView model = new ModelAndView(ViewConstant.VIEW_CITAS);
-		LocationViewModel lvm = new LocationViewModel();
-		lvm.setModulo("ADMISIONES");
-		lvm.setUbicacion(HrefConstant.HREF_CITAS);
-		lvm.setDescripcion("Aquí puedes gestionar citas");
-		model.addObject("lvm",lvm);
-		model.addObject("personsecurity",personsecurity);
-		LOG.info("Returning to "+ViewConstant.VIEW_CITAS+" view");		
-		return model;
+		return new ModelAndView("redirect:/cita");
 	}
 	
 	@GetMapping("perfil")
