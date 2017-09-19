@@ -38,11 +38,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.pl10.dermalif.constant.HrefConstant;
 import com.pl10.dermalif.constant.ViewConstant;
 import com.pl10.dermalif.enums.TypeIngresoStatus;
-import com.pl10.dermalif.model.ModelAjaxResponse;
 import com.pl10.dermalif.model.FacturaModel;
 import com.pl10.dermalif.model.IngresoJsonObject;
 import com.pl10.dermalif.model.IngresoModel;
 import com.pl10.dermalif.model.LocationViewModel;
+import com.pl10.dermalif.model.ModelAjaxResponse;
 import com.pl10.dermalif.model.PersonJsonObject;
 import com.pl10.dermalif.model.PersonModel;
 import com.pl10.dermalif.model.UserRolePersonModel;
@@ -55,7 +55,6 @@ import com.pl10.dermalif.service.UserService;
 
 @Controller
 @RequestMapping("user")
-@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class UserController {
 	
 	private static final Log LOG = LogFactory.getLog(UserController.class);
@@ -87,8 +86,8 @@ public class UserController {
 	@Qualifier("facturaService")
 	FacturaService facturaService;
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping({"","/"})
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	public String viewUsers(Model model){
 		LOG.info("METHOD: viewUsers()");
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -125,12 +124,13 @@ public class UserController {
 		model.addObject("personsecurity",personsecurity);
 		model.addObject("person", personModel);
 		model.addObject("personrole", userRolePersonModel);
+		
 		LOG.info("Returning to "+ViewConstant.VIEW_FORMUSER+" view -- PARAMS: "+personModel+" "+userRolePersonModel);		
 		return model;
 	}
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@PostMapping("/adduser")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	public ModelAndView addPerson(@Valid @ModelAttribute(name = "person") PersonModel personModel,
 			BindingResult bindingResult) {
 		LOG.info("METHOD: addPerson() -- PARAMS: " + personModel);
@@ -163,8 +163,8 @@ public class UserController {
 		return model;
 	}
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/addrole")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public @ResponseBody boolean addUserRole(@RequestParam boolean value, 
 			@RequestParam String personrol, 
 			@RequestParam String tprol,
@@ -402,20 +402,45 @@ public class UserController {
 	}
 	
 	@GetMapping("perfil")
+	@PreAuthorize("hasRole('ROLE_INGRESO')")
 	public ModelAndView requestUserPerfilForm(){
 		LOG.info("METHOD: requestUserPerfilForm()");
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		PersonModel personsecurity = userService.userConverter(user);
-		ModelAndView model = new ModelAndView(ViewConstant.VIEW_FORMUSER);
-		LocationViewModel lvm = new LocationViewModel();
-		lvm.setModulo("PERFIL");
-		lvm.setUbicacion(HrefConstant.HREF_PERFIL);
-		lvm.setDescripcion("Aquí puedes gestionar tu perfil");
-		model.addObject("lvm",lvm);
-		model.addObject("personsecurity",personsecurity);
+		if(personsecurity.getFirstname().equals("Administrador")) {
+			return new ModelAndView("redirect:/user");
+		}
 		LOG.info("Returning to "+ViewConstant.VIEW_FORMUSER+" view");		
-		return model;
+		return new ModelAndView("redirect:/user/usuarioform?id="+personsecurity.getId());
 	}
 	
+	@GetMapping("changepass")
+	public @ResponseBody Boolean changePassword(@RequestParam(name="pass1", required=false) String pass,
+			@RequestParam(name="pass2", required=false) String pass2) {
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return userService.validaPass(user.getUsername(), pass, pass2);
+	}
+	
+	@GetMapping("getingreso")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_INGRESO')")
+	public @ResponseBody IngresoModel getIngreso(@RequestParam(name="id", required=false) String id){
+		LOG.info("METHOD: getIngreso()");		
+		return ingresoService.findIngresoModelById(id);
+	}
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_INGRESO')")
+	@PostMapping("editingreso")
+	public String editIngreso(@ModelAttribute(name="idIngreso") String id,
+			@ModelAttribute(name="emp") String empresa,
+			@ModelAttribute(name="ocu") String ocupacion,
+			@ModelAttribute(name="cau") String causa) throws ParseException{
+		LOG.info("METHOD: editIngreso() -- PARAMS: emp=" + empresa+", ocu="+ocupacion+", cau="+causa);
+		IngresoModel ingresoModel = ingresoService.findIngresoModelById(id);
+		ingresoModel.setCconsulta(causa);
+		ingresoModel.setEmpresa(empresa);
+		ingresoModel.setOcupacion(ocupacion);
+		ingresoService.addIngresoModel(ingresoModel);
+		return "redirect:/user/ingresosview?result=2";
+	}	
 	
 }

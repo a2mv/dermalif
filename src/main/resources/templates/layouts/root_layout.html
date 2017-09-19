@@ -490,7 +490,8 @@
 					            		div += '<li><a href="/dermalif/historia/hcform?id='+data.id+'">Historia</a></li>';
 					            		div += '<li><a data-toggle="modal" href="#myModalFactura" data-id="'+ data.id +'" class="open-Modal-fact">Facturar</a></li>';
 					            		div += '<li><a data-toggle="modal" data-id="'+ data.id +'" href="#myModal" class="open-Modal">Hora</a></li>';
-					            		div += '<li><a data-toggle="modal" data-id="'+ data.id +'" href="#myModalanula" class="open-Modal-anulaing">Anular</a></li>';
+					            		div += '<li><a data-toggle="modal" data-id="'+ data.id +'" href="#myModalEditIngreso" class="open-Modal-editing">Editar</a></li>';
+					            		div += '<li><a data-toggle="modal" data-id="'+ data.id +'" href="#myModalanula" class="open-Modal-anulaing">Anular</a></li>';					            		
 					            		div += '</ul>';
 					            		div += '</div>';					            		
 					            		return 	div;
@@ -704,6 +705,18 @@
 						$(".modal-body #idIngreso").val( myDNI );
 						$.get('/dermalif/factura/getconsecutivo').done(function(data) {		
 							$(".modal-body #idFact").val( data );
+					   });
+					});
+					
+					$(document).on("click", ".open-Modal-editing", function () {
+						var myDNI = $(this).data('id');						
+						$(".modal-body #idIngreso").val( myDNI );
+						$.get('/dermalif/user/getingreso', {
+							id: $(this).data('id'),
+						}).done(function(data) {	
+							$(".modal-body #emp").val( data.empresa );
+							$(".modal-body #ocu").val( data.ocupacion );
+							$(".modal-body #cau").val( data.cconsulta );
 					   });
 					});
 						
@@ -985,7 +998,7 @@
 		  	
 		   
 			
-			 //CITAS MODULE
+			 /*----- CITAS MODULE ------*/
 			 
 			 //Date picker
 		    $('#fechastart').datepicker({
@@ -999,8 +1012,7 @@
 			      minuteStep: 10
 			    });
 			 
-			  /* initialize the calendar
-		     -----------------------------------------------------------------*/
+			  /* initialize the calendar -*/
 		    //Date for the calendar events (dummy data)
 		    var date = new Date();
 		    var d = date.getDate(),
@@ -1136,7 +1148,22 @@
 					$('#calendar').fullCalendar('removeEvents',$("#hdnIdCita").val());
 				  });
 			}
-
+			
+			/*----- CAMBIO DE CONTRASEÑA ------*/
+			function cambiarContraseña(){
+				$.get('/dermalif/user/changepass', {
+					pass1: $("#password-new1").val(),
+					pass2: $("#password-new2").val(),
+				}).done(function(data) {
+					if(data==false){
+						$("#msg-pass-modifica").text('');
+						$('#msg-pass-valida').text("Contraseña no coincide");
+					}else{
+						$("#msg-pass-valida").text('');
+						$('#msg-pass-modifica').text("Contraseña modificada");
+					}
+				});
+			}
 		  
 		</script>
 	</body>

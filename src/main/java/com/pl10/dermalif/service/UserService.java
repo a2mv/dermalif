@@ -175,5 +175,17 @@ public class UserService implements UserDetailsService {
 		}
 	}
 	
+	public boolean validaPass(String username, String password, String password2) {
+		com.pl10.dermalif.entity.User user = userRepository.findByUsername(username);
+		if(!password.equals(password2)) {
+			return false;
+		}
+		BCryptPasswordEncoder pe = new BCryptPasswordEncoder();
+		user.setPassword(pe.encode(password));
+		user = userRepository.save(user);
+		return true;
+	}
+	
+
 
 }

@@ -18,17 +18,6 @@
             			<img class="profile-user-img img-responsive img-circle" th:src="@{'/user/files?filename='+${person.id}}" alt="User profile picture"/>
 						<h3 class="profile-username text-center"><span th:text="${person.firstname+' '+person.lastname}"></span></h3>
 	            		<p class="text-muted text-center"><span th:text="${person.tdocumento+' '+person.ndocumento}"></span></p>
-		        		<ul class="list-group list-group-unbordered">
-	    	        		<li class="list-group-item">
-	        	        		<b>Admisiones</b> <a class="pull-right">27</a>
-	                		</li>
-	                		<li class="list-group-item">
-	                			<b>Inversión</b> <a class="pull-right">$500.000</a>
-	                		</li>
-	                		<li class="list-group-item">
-	                			<b>Otro</b> <a class="pull-right">#######</a>
-	                		</li>
-	              		</ul>
 	            	</div>
 	            	<!-- /.box-body -->
 	          	</div>
@@ -40,6 +29,7 @@
 					<li class="active"><a href="#datos" data-toggle="tab">Datos Personales</a></li>
               		<li><a href="#imagenperf" data-toggle="tab">Imagen de perfil</a></li>
               		<li th:if="${personsecurity.firstname}=='Administrador'"><a href="#rolesuser" data-toggle="tab">Usuario del sistema</a></li>
+              		<li th:if="${personsecurity.id == person.id}"><a href="#contrasena-user" data-toggle="tab">Cambiar contraseña</a></li>
 				</ul>
 				<div class="tab-content">
 					<!-- Datos personales -->
@@ -159,8 +149,10 @@
 						<form class="form-horizontal" action="#" th:action="@{/user/upload}" th:object="${person}" method="post" enctype="multipart/form-data">
 							<input type="hidden" th:field="*{id}" th:name="id"></input>
 				        	<div class="box-body">
-				        		<div class="form-group"><label for="exampleInputFile">Subir imagen</label>                  					
-                  						<input type="file" name="file" id="fileInput"/>                      					       				
+				        		<div class="form-group"><label class="col-md-4 control-label" for="exampleInputFile">Subir imagen</label>                  					
+               						<div class="col-md-5">
+               							<input class="form-control" type="file" name="file" id="fileInput"/>   
+               						</div>                  						                   					       				
                 				</div>
 				        	</div>
 				        	<div class="form-group">
@@ -235,7 +227,32 @@
 								</div>									
 							</div>
 						</div>
-					</div>					
+					</div>			
+					<!-- //roles -->	
+					<div th:if="${personsecurity.id == person.id}" class="tab-pane" id="contrasena-user">				
+					<form class="form-horizontal" action="#">			
+							<input type="hidden" th:field="${person.id}" th:id="idpass"></input>
+							<div class="box-body">
+				        		<div class="form-group required"><label class="col-md-4 control-label">Nueva contraseña:</label>
+				        			<div class="col-md-5">
+				        				<input class="form-control" type="password" th:id="password-new1" placeholder="Escriba nueva contraseña"/>
+				        			</div>
+				        		</div> 
+				        		<div class="form-group required"><label class="col-md-4 control-label">Confirme nueva contraseña:</label>
+				        			<div class="col-md-5">
+				        				<input class="form-control" type="password" th:id="password-new2" placeholder="Confirme nueva contraseña"/>			        				
+				        			</div>
+				        		</div> 
+				        		<span class="alert-danger" role="alert" id="msg-pass-valida"></span>
+				        		<span class="alert-success" role="alert" id="msg-pass-modifica"></span>	
+							</div>
+							<div class="form-group">
+                    			<div class="col-sm-offset-2 col-sm-10">
+                      				<button type="button" class="btn btn-primary" onclick="cambiarContraseña()">Aceptar</button>
+                    			</div>
+                  			</div>		
+               			</form>				
+					</div>	
 				</div>
 			</div>			
 		</div>
