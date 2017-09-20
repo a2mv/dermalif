@@ -204,7 +204,12 @@ public class FacturacionController {
 		IngresoModel ingresoModel = ingresoService.findIngresoModelById(idIngreso);
 		if(ingresoModel.getTstatus()==TypeIngresoStatus.ANULADO) {
 			return new ModelAndView("redirect:/user/ingresosview?result=4");
+		}else if(ingresoModel.getTstatus()==TypeIngresoStatus.FINALIZADO) {
+			ingresoModel.setTstatus(TypeIngresoStatus.EN_CURSO);
+		}else if(ingresoModel.getTstatus()==TypeIngresoStatus.FACTURADO) {
+			ingresoModel.setTstatus(TypeIngresoStatus.INGRESADO);
 		}
+		ingresoModel = ingresoService.addIngresoModel(ingresoModel);
 		//factura				
 		if(facturaService.existFactura(idFact)!=false) {
 			return new ModelAndView("redirect:/factura/ingresos?result=1");
@@ -378,6 +383,12 @@ public class FacturacionController {
 		if(facturaModel.getEstado().equals("ANULADO")) {
 			return "redirect:/factura/ingresos?result=2";
 		}
+		if(facturaModel.getIngresomodel().getTstatus()==TypeIngresoStatus.FINALIZADO) {
+			facturaModel.getIngresomodel().setTstatus(TypeIngresoStatus.EN_CURSO);
+		}else if(facturaModel.getIngresomodel().getTstatus()==TypeIngresoStatus.FACTURADO) {
+			facturaModel.getIngresomodel().setTstatus(TypeIngresoStatus.INGRESADO);
+		}
+		facturaModel.setIngresomodel(ingresoService.addIngresoModel(facturaModel.getIngresomodel()));
 		facturaModel.setEstado("ANULADO");
 		facturaService.addFactura(facturaModel);
 		return "redirect:/factura/ingresos?result=3";
@@ -389,6 +400,12 @@ public class FacturacionController {
 		LOG.info("METHOD: anulaFactura() -- PARAMS: factura=" + id);
 		FacturaModel facturaModel = facturaService.findFacturaModelById(id);			
 		facturaModel.setEstado("FINALIZADO");
+		if(facturaModel.getIngresomodel().getTstatus()==TypeIngresoStatus.EN_CURSO) {
+			facturaModel.getIngresomodel().setTstatus(TypeIngresoStatus.FINALIZADO);
+		}else {
+			facturaModel.getIngresomodel().setTstatus(TypeIngresoStatus.FACTURADO);
+		}
+		facturaModel.setIngresomodel(ingresoService.addIngresoModel(facturaModel.getIngresomodel()));
 		facturaService.addFactura(facturaModel);
 		return "redirect:/factura/new?factura="+id;
 	}

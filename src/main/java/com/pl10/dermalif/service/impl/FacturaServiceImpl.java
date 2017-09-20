@@ -43,6 +43,7 @@ public class FacturaServiceImpl implements FacturaService {
 	@Override
 	public FacturaModel addFactura(FacturaModel facturaModel) {
 		anularFactura(facturaModel.getIngresomodel());
+		
 		Factura factura = facturaConverter.facturaModelToFactura(facturaModel);
 		return facturaConverter.facturaToFacturaModel(facturaRepository.save(factura));
 	}
