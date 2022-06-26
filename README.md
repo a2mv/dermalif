@@ -8,7 +8,7 @@
 [![Bootstrap](https://img.shields.io/badge/Bootstrap-3.3.7-blue.svg)](https://getbootstrap.com/docs/3.3/)
 
 
-Este proyecto está en proceso de refactorización para el front [DermApp]([https://github.com/a2mv/dermalif](https://github.com/a2mv/react-derma-app/tree/develop))
+Este proyecto está en proceso de refactorización para el front [DermApp](https://github.com/a2mv/react-derma-app/tree/develop)
 
 Software para gestión de consultorio de dermatologia.
 
